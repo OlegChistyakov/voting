@@ -4,15 +4,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
+@Table(name = "dishes")
 public class Dish extends AbstractEntity {
 
     @Column(name = "description")
@@ -21,7 +20,10 @@ public class Dish extends AbstractEntity {
     @Column(name = "price")
     private int price;
 
+    @Column(name = "date")
+    private Date date;
+
     @ManyToOne
-    @JoinColumn(name = "restaurant_id")
+    @JoinColumn(name = "rest_id")
     private Restaurant restaurant;
 }
