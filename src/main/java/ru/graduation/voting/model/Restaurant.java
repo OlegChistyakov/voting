@@ -3,6 +3,7 @@ package ru.graduation.voting.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +15,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 @Table(name = "restaurants")
 public class Restaurant extends AbstractEntity {
 
@@ -25,4 +27,15 @@ public class Restaurant extends AbstractEntity {
 
     @OneToMany(mappedBy = "restaurant")
     private List<Dish> menu;
+
+    public Restaurant(Integer id, String name, String address, List<Dish> menu) {
+        super(id);
+        this.name = name;
+        this.address = address;
+        this.menu = menu;
+    }
+
+    public Restaurant(String name, String address, List<Dish> menu) {
+        this(null, name, address, menu);
+    }
 }

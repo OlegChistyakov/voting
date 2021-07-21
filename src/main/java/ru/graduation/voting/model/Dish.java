@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -21,9 +21,21 @@ public class Dish extends AbstractEntity {
     private int price;
 
     @Column(name = "date")
-    private Date date;
+    private LocalDate date;
 
     @ManyToOne
     @JoinColumn(name = "rest_id")
     private Restaurant restaurant;
+
+    public Dish(Integer id, String description, int price, LocalDate date, Restaurant restaurant) {
+        super(id);
+        this.description = description;
+        this.price = price;
+        this.date = date;
+        this.restaurant = restaurant;
+    }
+
+    public Dish(String description, int price, LocalDate date, Restaurant restaurant) {
+        this(null, description, price, date, restaurant);
+    }
 }
