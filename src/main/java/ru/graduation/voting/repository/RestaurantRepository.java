@@ -2,7 +2,6 @@ package ru.graduation.voting.repository;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import ru.graduation.voting.model.Dish;
 import ru.graduation.voting.model.Restaurant;
 
 import javax.persistence.EntityManager;
@@ -18,37 +17,33 @@ public class RestaurantRepository {
     private EntityManager em;
 
     public Restaurant getWithMenuByDate(Integer id, LocalDate date) {
-        Restaurant restaurant = getRestaurantById(id);
-        restaurant.setMenu(em.createQuery(
-                "SELECT d FROM Dish d WHERE d.restaurant.id = :rest_id AND d.date=:date", Dish.class)
-                .setParameter("rest_id", restaurant.getId())
+        return em.createQuery(
+                "SELECT r FROM Restaurant r " +
+                        "JOIN FETCH r.menu m " +
+                        "WHERE r.id=:id AND m.date=:date", Restaurant.class)
+                .setParameter("id", id)
                 .setParameter("date", date)
-                .getResultList());
-        return restaurant;
+                .getSingleResult();
     }
 
     public Restaurant getWithAllMenuBetweenDate(Integer id, LocalDate startDate, LocalDate endDate) {
-        Restaurant restaurant = getRestaurantById(id);
-        restaurant.setMenu(em.createQuery(
-                "SELECT d FROM Dish d WHERE d.restaurant.id = :rest_id AND d.date>=:startDate AND d.date<=:endDate", Dish.class)
-                .setParameter("rest_id", restaurant.getId())
+        return em.createQuery(
+                "SELECT r FROM Restaurant r " +
+                        "JOIN FETCH r.menu m " +
+                        "WHERE r.id=:id AND m.date>=:startDate AND m.date<=:endDate", Restaurant.class)
+                .setParameter("id", id)
                 .setParameter("startDate", startDate)
                 .setParameter("endDate", endDate)
-                .getResultList());
-        return restaurant;
+                .getSingleResult();
     }
 
     public List<Restaurant> getAllWithMenuByDate(LocalDate date) {
         List<Restaurant> restaurants = em
-                .createQuery("SELECT DISTINCT r FROM Restaurant r JOIN FETCH r.menu m WHERE m.date=:date", Restaurant.class)
+                .createQuery(
+                        "SELECT DISTINCT r FROM Restaurant r " +
+                                "JOIN FETCH r.menu m WHERE m.date=:date", Restaurant.class)
                 .setParameter("date", date)
                 .getResultList();
         return restaurants;
-    }
-
-    private Restaurant getRestaurantById(Integer id) {
-        return em.createQuery("SELECT r FROM Restaurant r WHERE r.id=:id", Restaurant.class)
-                .setParameter("id", id)
-                .getSingleResult();
     }
 }

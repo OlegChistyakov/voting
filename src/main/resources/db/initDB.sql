@@ -9,7 +9,8 @@ CREATE TABLE restaurants
 (
     id      INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
     name    VARCHAR NOT NULL,
-    address VARCHAR NOT NULL
+    address VARCHAR NOT NULL,
+    CONSTRAINT name_address_idx UNIQUE (name, address)
 );
 
 CREATE TABLE dishes

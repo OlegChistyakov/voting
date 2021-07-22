@@ -36,7 +36,9 @@ class RestaurantRepositoryTest {
 
     @Test
     void getAllWithMenuByDate() {
-        List<Restaurant> restaurant = repository.getAllWithMenuByDate(LocalDate.now());
-        System.out.println(restaurant);
+        List<Restaurant> actual = repository.getAllWithMenuByDate(LocalDate.now());
+        REST_MATCHER.assertMatch(actual, allWithTodayMenu);
+        DISH_MATCHER.assertMatch(actual.get(0).getMenu(), allWithTodayMenu.get(0).getMenu());
+        DISH_MATCHER.assertMatch(actual.get(1).getMenu(), allWithTodayMenu.get(1).getMenu());
     }
 }
