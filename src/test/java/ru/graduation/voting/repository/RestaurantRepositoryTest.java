@@ -21,6 +21,22 @@ class RestaurantRepositoryTest {
     RestaurantRepository repository;
 
     @Test
+    void create() {
+        Restaurant saveRestaurant = repository.save(getNew());
+        Restaurant newRestaurant = getNew();
+
+        int newId = saveRestaurant.getId();
+        newRestaurant.setId(newId);
+
+        for (int i = 0; i < saveRestaurant.getMenu().size(); i++) {
+            newRestaurant.getMenu().get(i).setId(saveRestaurant.getMenu().get(i).getId());
+        }
+
+        REST_MATCHER.assertMatch(saveRestaurant, newRestaurant);
+        DISH_MATCHER.assertMatch(saveRestaurant.getMenu(), newRestaurant.getMenu());
+    }
+
+    @Test
     void getWithTodayMenu() {
         Restaurant actual = repository.getWithMenuByDate(100_000, LocalDate.now());
         REST_MATCHER.assertMatch(actual, restaurantWithTodayMenu);

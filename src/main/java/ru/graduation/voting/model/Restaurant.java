@@ -22,7 +22,7 @@ public class Restaurant extends AbstractEntity {
     @Column(name = "address")
     private String address;
 
-    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Dish> menu;
 
     public Restaurant(Integer id, String name, String address, List<Dish> menu) {
