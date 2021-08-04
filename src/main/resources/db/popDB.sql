@@ -1,5 +1,8 @@
 DELETE FROM  dishes;
 DELETE FROM  restaurants;
+DELETE FROM user_roles;
+DELETE FROM votes;
+DELETE FROM users;
 
 ALTER SEQUENCE global_seq RESTART WITH 100000;
 
@@ -18,3 +21,18 @@ VALUES (100000, date 'now()' - integer '1', 'yesterday''s dish_1 from rest_1', 5
        (100001, date 'now()', 'today''s dish_1 from rest_2', 543),
        (100001, date 'now()', 'today''s dish_2 from rest_2', 10),
        (100002, date 'now()' - integer '10', 'very old dish', 1000);
+
+INSERT INTO users (name, email, password)
+VALUES ('User', 'user@yandex.ru', 'password'),
+       ('Admin', 'admin@gmail.com', 'admin');
+
+INSERT INTO user_roles (role, user_id)
+VALUES ('USER', 100012),
+       ('ADMIN', 100013),
+       ('USER', 100013);
+
+INSERT INTO votes (date, user_id, rest_id)
+VALUES (date 'now()', 100012, 100000),
+       (date 'now()' - integer '10', 100012, 100002),
+       (date 'now()', 100013, 100000),
+       (date 'now()' - integer '2', 100013, 100001);
