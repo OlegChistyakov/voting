@@ -12,7 +12,6 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
 @Table(name = "restaurants")
 public class Restaurant extends AbstractEntity {
 

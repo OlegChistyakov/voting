@@ -1,4 +1,4 @@
-package ru.graduation.voting.controller;
+package ru.graduation.voting.web;
 
 import ru.graduation.voting.model.AbstractEntity;
 

@@ -35,25 +35,41 @@ public class RestaurantRepository {
         return em.find(Restaurant.class, id);
     }
 
+    public Restaurant getWithMenu(Integer restId) {
+        return em.createQuery(
+                        "SELECT r FROM Restaurant r " +
+                                "JOIN FETCH r.menu m " +
+                                "WHERE r.id=:id", Restaurant.class)
+                .setParameter("id", restId)
+                .getSingleResult();
+    }
+
+    public Restaurant getWithMe(Integer id) {
+        return em.find(Restaurant.class, id);
+    }
+
+    public List<Restaurant> getAll() {
+        return em.createQuery("SELECT r FROM Restaurant r", Restaurant.class).getResultList();
+    }
+
     public Restaurant getWithMenuByDate(Integer id, LocalDate date) {
         return em.createQuery(
-                "SELECT r FROM Restaurant r " +
-                        "JOIN FETCH r.menu m " +
-                        "WHERE r.id=:id AND m.date=:date", Restaurant.class)
+                        "SELECT r FROM Restaurant r " +
+                                "JOIN FETCH r.menu m " +
+                                "WHERE r.id=:id AND m.date=:date", Restaurant.class)
                 .setParameter("id", id)
                 .setParameter("date", date)
                 .getSingleResult();
     }
 
-    public Restaurant getWithAllMenuBetweenDate(Integer id, LocalDate startDate, LocalDate endDate) {
+    public List<Restaurant> getWithAllMenuBetweenDate(LocalDate startDate, LocalDate endDate) {
         return em.createQuery(
-                "SELECT r FROM Restaurant r " +
-                        "JOIN FETCH r.menu m " +
-                        "WHERE r.id=:id AND m.date>=:startDate AND m.date<=:endDate", Restaurant.class)
-                .setParameter("id", id)
+                        "SELECT r FROM Restaurant r " +
+                                "JOIN FETCH r.menu m " +
+                                "WHERE m.date>=:startDate AND m.date<=:endDate", Restaurant.class)
                 .setParameter("startDate", startDate)
                 .setParameter("endDate", endDate)
-                .getSingleResult();
+                .getResultList();
     }
 
     public List<Restaurant> getAllWithMenuByDate(LocalDate date) {
