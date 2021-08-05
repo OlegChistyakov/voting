@@ -1,6 +1,6 @@
 package ru.graduation.voting.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,7 +26,7 @@ public class Dish extends AbstractEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rest_id")
-    @JsonIgnore
+    @JsonBackReference
     private Restaurant restaurant;
 
     public Dish(Integer id, String description, int price, LocalDate date, Restaurant restaurant) {
