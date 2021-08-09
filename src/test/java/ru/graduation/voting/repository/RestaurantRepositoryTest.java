@@ -7,18 +7,13 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import ru.graduation.voting.model.Restaurant;
 
-import java.time.LocalDate;
-import java.util.List;
-
-import static ru.graduation.voting.repository.RestaurantData.*;
-
 @SpringBootTest
 @Sql(scripts = "classpath:db/popDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 class RestaurantRepositoryTest {
-//
-//    @Autowired
-//    RestaurantRepository repository;
-//
+
+    @Autowired
+    RestaurantRepository repository;
+
 //    @Test
 //    void create() {
 //        Restaurant saveRestaurant = repository.save(getNew());
@@ -56,4 +51,11 @@ class RestaurantRepositoryTest {
 //        DISH_MATCHER.assertMatch(actual.get(0).getMenu(), allWithTodayMenu.get(0).getMenu());
 //        DISH_MATCHER.assertMatch(actual.get(1).getMenu(), allWithTodayMenu.get(1).getMenu());
 //    }
+
+    @Test
+    void create() {
+        Restaurant restaurant = new Restaurant("newName", "newAddress", null);
+        restaurant = repository.save(restaurant);
+        System.out.println(restaurant);
+    }
 }

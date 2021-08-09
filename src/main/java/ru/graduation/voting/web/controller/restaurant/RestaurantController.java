@@ -6,7 +6,6 @@ import org.springframework.http.MediaType;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 import ru.graduation.voting.model.Restaurant;
-import ru.graduation.voting.repository.RestaurantRepository;
 
 import java.time.LocalDate;
 
@@ -14,15 +13,9 @@ import static ru.graduation.voting.util.DateUtil.endDayOrMax;
 import static ru.graduation.voting.util.DateUtil.startDayOrMin;
 
 @RestController
-@RequestMapping(value = "api/v1/restaurant", produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
-public class RestaurantController {
-
-    private final RestaurantRepository repository;
-
-    public RestaurantController(RestaurantRepository repository) {
-        this.repository = repository;
-    }
+@RequestMapping(value = "api/v1/restaurant", produces = MediaType.APPLICATION_JSON_VALUE)
+public class RestaurantController extends AbstractRestaurantController {
 
     @GetMapping("/{restId}")
     public Restaurant getById(@PathVariable Integer restId) {

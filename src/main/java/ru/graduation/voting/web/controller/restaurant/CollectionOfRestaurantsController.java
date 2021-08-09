@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.graduation.voting.model.Restaurant;
-import ru.graduation.voting.repository.RestaurantRepository;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -21,13 +20,7 @@ import static ru.graduation.voting.util.DateUtil.startDayOrMin;
 @RestController
 @Slf4j
 @RequestMapping(value = "api/v1/restaurants", produces = MediaType.APPLICATION_JSON_VALUE)
-public class CollectionOfRestaurantsController {
-
-    private final RestaurantRepository repository;
-
-    public CollectionOfRestaurantsController(RestaurantRepository repository) {
-        this.repository = repository;
-    }
+public class CollectionOfRestaurantsController extends AbstractRestaurantController {
 
     @GetMapping
     public List<Restaurant> getAll() {
