@@ -10,11 +10,11 @@ public class DateUtil {
     private DateUtil() {
     }
 
-    public static LocalDate atStartOfDayOrMin(LocalDate localDate) {
+    public static LocalDate startDayOrMin(LocalDate localDate) {
         return localDate != null ? localDate : MIN_DATE;
     }
 
-    public static LocalDate atStartOfNextDayOrMax(LocalDate localDate) {
+    public static LocalDate endDayOrMax(LocalDate localDate) {
         return localDate != null ? localDate : MAX_DATE;
     }
 }
