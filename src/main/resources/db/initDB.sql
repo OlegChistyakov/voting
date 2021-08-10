@@ -8,12 +8,24 @@ DROP SEQUENCE IF EXISTS global_seq;
 
 CREATE SEQUENCE global_seq START WITH 100000;
 
+CREATE TABLE users
+(
+    id         INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
+    name       VARCHAR                           NOT NULL,
+    email      VARCHAR                           NOT NULL,
+    password   VARCHAR                           NOT NULL,
+    registered TIMESTAMP           DEFAULT now() NOT NULL,
+    enabled    BOOL                DEFAULT TRUE  NOT NULL
+);
+
 CREATE TABLE restaurants
 (
     id      INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
     name    VARCHAR NOT NULL,
     address VARCHAR NOT NULL,
-    CONSTRAINT name_address_idx UNIQUE (name, address)
+    user_id INTEGER NOT NULL,
+    CONSTRAINT name_address_idx UNIQUE (name, address),
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
 CREATE TABLE dishes
@@ -27,16 +39,6 @@ CREATE TABLE dishes
     FOREIGN KEY (rest_id) REFERENCES restaurants (id) ON DELETE CASCADE
 );
 
-CREATE TABLE users
-(
-    id         INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
-    name       VARCHAR                           NOT NULL,
-    email      VARCHAR                           NOT NULL,
-    password   VARCHAR                           NOT NULL,
-    registered TIMESTAMP           DEFAULT now() NOT NULL,
-    enabled    BOOL                DEFAULT TRUE  NOT NULL
-);
-
 CREATE TABLE votes
 (
     id      INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
@@ -44,7 +46,7 @@ CREATE TABLE votes
     user_id INTEGER NOT NULL,
     rest_id INTEGER NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users (id),
-    FOREIGN KEY (rest_id) REFERENCES restaurants (id)
+    FOREIGN KEY (rest_id) REFERENCES restaurants (id) ON DELETE CASCADE
 );
 
 CREATE UNIQUE INDEX votes_unique_date_user_idx ON votes (user_id, date);

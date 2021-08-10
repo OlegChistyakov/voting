@@ -1,5 +1,8 @@
 package ru.graduation.voting.repository;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -7,13 +10,20 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import ru.graduation.voting.model.Restaurant;
 
+import static ru.graduation.voting.web.SecurityUtil.authUserId;
+
 @SpringBootTest
 @Sql(scripts = "classpath:db/popDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 class RestaurantRepositoryTest {
 
     @Autowired
-    RestaurantRepository repository;
+    RestaurantRepository restRepo;
 
+    @Autowired
+    UserRepository userRepo;
+
+    @Autowired
+    ObjectMapper mapper;
 //    @Test
 //    void create() {
 //        Restaurant saveRestaurant = repository.save(getNew());
@@ -53,9 +63,8 @@ class RestaurantRepositoryTest {
 //    }
 
     @Test
-    void create() {
-        Restaurant restaurant = new Restaurant("newName", "newAddress", null);
-        restaurant = repository.save(restaurant);
-        System.out.println(restaurant);
+    void create() throws JsonProcessingException {
+        Restaurant restaurant = restRepo.findById(100_003).get();
+        System.out.println(restaurant.getOwner().getId());
     }
 }

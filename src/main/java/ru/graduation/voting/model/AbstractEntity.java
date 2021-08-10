@@ -3,6 +3,7 @@ package ru.graduation.voting.model;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import org.hibernate.Hibernate;
 import org.springframework.data.domain.Persistable;
+import org.springframework.util.Assert;
 
 import javax.persistence.*;
 
@@ -34,6 +35,11 @@ public abstract class AbstractEntity implements Persistable<Integer> {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public int id() {
+        Assert.notNull(id, "Entity must have id");
+        return id;
     }
 
     @Override

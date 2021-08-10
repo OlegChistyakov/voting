@@ -5,5 +5,5 @@ import ru.graduation.voting.repository.RestaurantRepository;
 
 public abstract class AbstractRestaurantController {
     @Autowired
-    protected RestaurantRepository repository;
+    protected RestaurantRepository restaurantRepository;
 }

@@ -20,13 +20,13 @@ public class RestaurantController extends AbstractRestaurantController {
     @GetMapping("/{restId}")
     public Restaurant getById(@PathVariable Integer restId) {
         log.info("getting restaurant by id: {}", restId);
-        return repository.findById(restId).orElse(null);
+        return restaurantRepository.findById(restId).orElse(null);
     }
 
     @GetMapping("/{restId}/with-menu")
     public Restaurant getByIdWithMenu(@PathVariable Integer restId) {
         log.info("getting restaurant by id: {} with menu history", restId);
-        return repository.getWithMenu(restId);
+        return restaurantRepository.getWithMenu(restId);
     }
 
     @GetMapping("/{restId}/with-menu/by")
@@ -34,6 +34,6 @@ public class RestaurantController extends AbstractRestaurantController {
                                                  @RequestParam @Nullable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
                                                  @RequestParam @Nullable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
         log.info("getting restaurant by id: {} with menu from start date: {} to end date: {}", restId, startDate, endDate);
-        return repository.getWithMenuBetweenDate(restId, startDayOrMin(startDate), endDayOrMax(endDate));
+        return restaurantRepository.getWithMenuBetweenDate(restId, startDayOrMin(startDate), endDayOrMax(endDate));
     }
 }

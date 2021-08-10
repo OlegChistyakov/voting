@@ -25,14 +25,14 @@ public class CollectionOfRestaurantsController extends AbstractRestaurantControl
     @GetMapping
     public List<Restaurant> getAll() {
         log.info("getting all restaurants");
-        return repository.findAll();
+        return restaurantRepository.findAll();
     }
 
     @GetMapping("/with-today-menu")
     @Cacheable("restaurants")
     public List<Restaurant> getAllWithTodayMenu() {
         log.info("getting all restaurants with today menu");
-        return repository.getAllWithMenuBetweenDate(LocalDate.now(), LocalDate.now());
+        return restaurantRepository.getAllWithMenuBetweenDate(LocalDate.now(), LocalDate.now());
     }
 
     @GetMapping("/with-menu")
@@ -40,6 +40,6 @@ public class CollectionOfRestaurantsController extends AbstractRestaurantControl
             @RequestParam @Nullable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
             @RequestParam @Nullable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
         log.info("getting all restaurants with menu from start date: {} to end date: {}", startDate, endDate);
-        return repository.getAllWithMenuBetweenDate(startDayOrMin(startDate), endDayOrMax(endDate));
+        return restaurantRepository.getAllWithMenuBetweenDate(startDayOrMin(startDate), endDayOrMax(endDate));
     }
 }
