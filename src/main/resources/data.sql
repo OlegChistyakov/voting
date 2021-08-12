@@ -1,4 +1,4 @@
-DELETE FROM  dishes;
+DELETE FROM dishes;
 DELETE FROM user_roles;
 DELETE FROM votes;
 DELETE FROM restaurants;
@@ -21,18 +21,18 @@ VALUES ('RestaurantName1', 'address1', 100000),
        ('RestaurantName3', 'address3', 100001);
 
 INSERT INTO dishes (rest_id, date, description, price)
-VALUES (100002, date 'now()' - integer '1', 'yesterday''s dish_1 from rest_1', 546),
-       (100002, date 'now()', 'today''s dish_1 from rest_1', 432),
-       (100002, date 'now()' - integer '1', 'yesterday''s dish_2 from rest_1', 100),
-       (100002, date 'now()', 'today''s dish_2 from rest_1', 1000),
-       (100003, date 'now()' - integer '2', 'before yesterday''s dish_1 from rest_2', 250),
-       (100003, date 'now()' - integer '2', 'before yesterday''s dish_2 from rest_2', 500),
-       (100003, date 'now()', 'today''s dish_1 from rest_2', 543),
-       (100003, date 'now()', 'today''s dish_2 from rest_2', 10),
-       (100004, date 'now()' - integer '10', 'very old dish', 1000);
+VALUES (100002, now() - 1, 'yesterday''s dish_1 from rest_1', 546),
+       (100002, now(), 'today''s dish_1 from rest_1', 432),
+       (100002, now() - 1, 'yesterday''s dish_2 from rest_1', 100),
+       (100002, now(), 'today''s dish_2 from rest_1', 1000),
+       (100003, now() - 2, 'before yesterday''s dish_1 from rest_2', 250),
+       (100003, now() - 2, 'before yesterday''s dish_2 from rest_2', 500),
+       (100003, now(), 'today''s dish_1 from rest_2', 543),
+       (100003, now(), 'today''s dish_2 from rest_2', 10),
+       (100004, now() - 10, 'very old dish', 1000);
 
 INSERT INTO votes (date, user_id, rest_id)
-VALUES (date 'now()', 100000, 100002),
-       (date 'now()' - integer '10', 100000, 100004),
-       (date 'now()', 100001, 100002),
-       (date 'now()' - integer '2', 100001, 100003);
+VALUES (now(), 100000, 100002),
+       (now() - 10, 100000, 100004),
+       (now(), 100001, 100002),
+       (now() - 2, 100001, 100003);

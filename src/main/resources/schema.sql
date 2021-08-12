@@ -10,17 +10,17 @@ CREATE SEQUENCE global_seq START WITH 100000;
 
 CREATE TABLE users
 (
-    id         INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
-    name       VARCHAR                           NOT NULL,
-    email      VARCHAR                           NOT NULL,
-    password   VARCHAR                           NOT NULL,
-    registered TIMESTAMP           DEFAULT now() NOT NULL,
-    enabled    BOOL                DEFAULT TRUE  NOT NULL
+    id         INTEGER   DEFAULT global_seq.nextval PRIMARY KEY,
+    name       VARCHAR                 NOT NULL,
+    email      VARCHAR                 NOT NULL,
+    password   VARCHAR                 NOT NULL,
+    registered TIMESTAMP DEFAULT now() NOT NULL,
+    enabled    BOOL      DEFAULT TRUE  NOT NULL
 );
 
 CREATE TABLE restaurants
 (
-    id      INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
+    id      INTEGER   DEFAULT global_seq.nextval PRIMARY KEY,
     name    VARCHAR NOT NULL,
     address VARCHAR NOT NULL,
     user_id INTEGER NOT NULL,
@@ -30,7 +30,7 @@ CREATE TABLE restaurants
 
 CREATE TABLE dishes
 (
-    id          INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
+    id          INTEGER   DEFAULT global_seq.nextval PRIMARY KEY,
     rest_id     INTEGER NOT NULL,
     date        DATE    NOT NULL,
     description VARCHAR NOT NULL,
@@ -41,7 +41,7 @@ CREATE TABLE dishes
 
 CREATE TABLE votes
 (
-    id      INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
+    id      INTEGER   DEFAULT global_seq.nextval PRIMARY KEY,
     date    DATE    NOT NULL,
     user_id INTEGER NOT NULL,
     rest_id INTEGER NOT NULL,
