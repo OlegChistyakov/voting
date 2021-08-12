@@ -1,4 +1,4 @@
-package ru.graduation.voting.web;
+package ru.graduation.voting.config;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;

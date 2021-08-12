@@ -1,4 +1,4 @@
-package ru.graduation.voting.web.controller.restaurant;
+package ru.graduation.voting.web.controller.admin;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -15,7 +15,7 @@ import static ru.graduation.voting.web.SecurityUtil.authUserId;
 @RestController
 @Slf4j
 @RequestMapping(value = "api/v1/admin/restaurant", produces = MediaType.APPLICATION_JSON_VALUE)
-public class AdminRestaurantController extends AbstractRestaurantController {
+public class AdminRestaurantController extends AbstractAdminController {
 
     private final UserRepository userRepository;
 
@@ -37,7 +37,7 @@ public class AdminRestaurantController extends AbstractRestaurantController {
     public void update(@PathVariable Integer id,
                        @RequestBody Restaurant restaurant) {
         int userId = authUserId();
-        log.info("update {} restaurant for user {}", id, userId);
+        log.info("update restaurant id: {} for user: {}", id, userId);
         assureIdConsistent(restaurant, id);
         save(restaurant, userId);
     }
@@ -50,17 +50,11 @@ public class AdminRestaurantController extends AbstractRestaurantController {
         restaurantRepository.delete(id, userId);
     }
 
-    private Restaurant save(Restaurant restaurant, int userId) {
+    Restaurant save(Restaurant restaurant, int userId) {
         if (!restaurant.isNew() && getRestaurant(restaurant.getId(), userId) == null) {
             return null;
         }
         restaurant.setOwner(userRepository.getById(userId));
         return restaurantRepository.save(restaurant);
-    }
-
-    private Restaurant getRestaurant(int id, int userId) {
-        return restaurantRepository.findById(id)
-                .filter(r -> r.getOwner().getId() == userId)
-                .orElse(null);
     }
 }
