@@ -19,7 +19,7 @@ import static ru.graduation.voting.util.DateUtil.startDayOrMin;
 
 @RestController
 @Slf4j
-@RequestMapping(value = "api/v1/restaurants", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "api/v1/account/restaurants", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CollectionOfRestaurantsController extends AbstractRestaurantController {
 
     @GetMapping
