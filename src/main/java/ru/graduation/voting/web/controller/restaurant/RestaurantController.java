@@ -2,9 +2,12 @@ package ru.graduation.voting.web.controller.restaurant;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
+import ru.graduation.voting.error.NotFoundException;
 import ru.graduation.voting.model.Restaurant;
 
 import java.time.LocalDate;
@@ -14,13 +17,16 @@ import static ru.graduation.voting.util.DateUtil.startDayOrMin;
 
 @RestController
 @Slf4j
-@RequestMapping(value = "api/v1/account/restaurant", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "api/v1/restaurant", produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestaurantController extends AbstractRestaurantController {
 
     @GetMapping("/{restId}")
-    public Restaurant getById(@PathVariable Integer restId) {
-        log.info("getting restaurant by id: {}", restId);
-        return restaurantRepository.findById(restId).orElse(null);
+    public ResponseEntity<Restaurant> getById(@PathVariable Integer restId) {
+        log.info("Get restaurant by id: {}", restId);
+        Restaurant found = restaurantRepository
+                .findById(restId)
+                .orElseThrow(() -> new NotFoundException("Restaurant by id: " + restId + " not found"));
+        return new ResponseEntity<>(found, HttpStatus.OK);
     }
 
     @GetMapping("/{restId}/with-menu")
