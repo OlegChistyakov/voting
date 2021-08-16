@@ -18,7 +18,7 @@ public class Vote extends AbstractEntity {
     @Column(name = "date")
     LocalDate localDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
