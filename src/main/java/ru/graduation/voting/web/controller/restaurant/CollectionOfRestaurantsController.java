@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,23 +24,24 @@ import static ru.graduation.voting.util.DateUtil.startDayOrMin;
 public class CollectionOfRestaurantsController extends AbstractRestaurantController {
 
     @GetMapping
-    public List<Restaurant> getAll() {
-        log.info("getting all restaurants");
+    public List<Restaurant> get() {
+        log.info("Get all restaurants");
         return restaurantRepository.findAll();
     }
 
     @GetMapping("/with-today-menu")
     @Cacheable("restaurants")
-    public List<Restaurant> getAllWithTodayMenu() {
-        log.info("getting all restaurants with today menu");
-        return restaurantRepository.getAllWithMenuBetweenDate(LocalDate.now(), LocalDate.now());
+    public ResponseEntity<List<Restaurant>> getWithTodayMenu() {
+        log.info("Get all restaurants with today menu");
+        return response(() -> restaurantRepository.getAllWithMenuBetweenDate(LocalDate.now(), LocalDate.now()));
     }
 
     @GetMapping("/with-menu")
-    public List<Restaurant> getAllWithMenuBetweenDate(
+    public ResponseEntity<List<Restaurant>> getWithMenuBetweenDate(
             @RequestParam @Nullable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
             @RequestParam @Nullable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
-        log.info("getting all restaurants with menu from start date: {} to end date: {}", startDate, endDate);
-        return restaurantRepository.getAllWithMenuBetweenDate(startDayOrMin(startDate), endDayOrMax(endDate));
+        log.info("Get all restaurants with menu from start date: {} to end date: {}", startDate, endDate);
+        return response(() ->
+                restaurantRepository.getAllWithMenuBetweenDate(startDayOrMin(startDate), endDayOrMax(endDate)));
     }
 }

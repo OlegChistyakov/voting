@@ -24,7 +24,7 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
 
     @Query("SELECT r FROM Restaurant r JOIN FETCH r.menu m WHERE m.date>=?1 AND m.date<=?2")
     @EntityGraph(attributePaths = {"menu"}, type = EntityGraph.EntityGraphType.LOAD)
-    List<Restaurant> getAllWithMenuBetweenDate(LocalDate startDate, LocalDate endDate);
+    Optional<List<Restaurant>> getAllWithMenuBetweenDate(LocalDate startDate, LocalDate endDate);
 
     @Modifying
     @Transactional
