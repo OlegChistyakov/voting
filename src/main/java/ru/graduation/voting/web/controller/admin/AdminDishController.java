@@ -45,4 +45,16 @@ public class AdminDishController extends AbstractAdminController {
         dish.setRestaurant(restaurant);
         dishRepository.save(dish);
     }
+
+    @DeleteMapping(value = "/{dishId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable int id, @PathVariable int dishId) {
+        int userId = authUserId();
+        log.info("delete dish {} for user {}", dishId, userId);
+        Restaurant restaurant = getRestaurant(id, userId);
+        if (restaurant == null) {
+            return;
+        }
+        dishRepository.delete(dishId, id);
+    }
 }
