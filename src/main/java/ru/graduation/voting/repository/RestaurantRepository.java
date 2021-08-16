@@ -9,17 +9,18 @@ import ru.graduation.voting.model.Restaurant;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Transactional(readOnly = true)
 public interface RestaurantRepository extends JpaRepository<Restaurant, Integer> {
 
     @Query("SELECT r FROM Restaurant r WHERE r.id=?1")
     @EntityGraph(attributePaths = {"menu"}, type = EntityGraph.EntityGraphType.LOAD)
-    Restaurant getWithMenu(Integer restId);
+    Optional<Restaurant> getWithMenu(Integer restId);
 
     @Query("SELECT r FROM Restaurant r JOIN FETCH r.menu m WHERE r.id=?1 AND m.date>=?2 AND m.date<=?3")
     @EntityGraph(attributePaths = {"menu"}, type = EntityGraph.EntityGraphType.LOAD)
-    Restaurant getWithMenuBetweenDate(Integer restId, LocalDate startDate, LocalDate endDate);
+    Optional<Restaurant> getWithMenuBetweenDate(Integer restId, LocalDate startDate, LocalDate endDate);
 
     @Query("SELECT r FROM Restaurant r JOIN FETCH r.menu m WHERE m.date>=?1 AND m.date<=?2")
     @EntityGraph(attributePaths = {"menu"}, type = EntityGraph.EntityGraphType.LOAD)
