@@ -13,7 +13,7 @@ import ru.graduation.voting.model.Restaurant;
 import static ru.graduation.voting.web.SecurityUtil.authUserId;
 
 @SpringBootTest
-@Sql(scripts = "classpath:db/popDB.sql", config = @SqlConfig(encoding = "UTF-8"))
+@Sql(scripts = "classpath:data.sql", config = @SqlConfig(encoding = "UTF-8"))
 class RestaurantRepositoryTest {
 
     @Autowired
@@ -64,7 +64,7 @@ class RestaurantRepositoryTest {
 
     @Test
     void create() throws JsonProcessingException {
-        Restaurant restaurant = restRepo.findById(100_003).get();
-        System.out.println(restaurant.getOwner().getId());
+        Restaurant restaurant = restRepo.getByNameIgnoreCase("restaurantNAME1").get();
+        restaurant.getId();
     }
 }

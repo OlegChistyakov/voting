@@ -24,7 +24,7 @@ CREATE TABLE restaurants
     name    VARCHAR NOT NULL,
     address VARCHAR NOT NULL,
     user_id INTEGER NOT NULL,
-    CONSTRAINT name_address_idx UNIQUE (name, address),
+    CONSTRAINT name_idx UNIQUE (name),
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 

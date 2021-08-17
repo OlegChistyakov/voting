@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.graduation.voting.model.Restaurant;
 import ru.graduation.voting.repository.UserRepository;
 
+import javax.validation.Valid;
+
 import static ru.graduation.voting.util.ValidationUtil.assureIdConsistent;
 import static ru.graduation.voting.util.ValidationUtil.checkNew;
 import static ru.graduation.voting.web.SecurityUtil.authUserId;
@@ -24,7 +26,7 @@ public class AdminRestaurantController extends AbstractAdminController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Restaurant> create(@RequestBody Restaurant restaurant) {
+    public ResponseEntity<Restaurant> create(@Valid @RequestBody Restaurant restaurant) {
         int userId = authUserId();
         log.info("create restaurant by name: {} for user: {}", restaurant.getName(), userId);
         checkNew(restaurant);
