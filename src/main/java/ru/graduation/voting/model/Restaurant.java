@@ -1,6 +1,6 @@
 package ru.graduation.voting.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,6 +12,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "restaurants")
 public class Restaurant extends AbstractEntity {
 
@@ -24,20 +25,10 @@ public class Restaurant extends AbstractEntity {
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Dish> menu;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    @JsonBackReference
-    private User owner;
-
-    public Restaurant(Integer id, String name, String address, List<Dish> menu, User owner) {
+    public Restaurant(Integer id, String name, String address, List<Dish> menu) {
         super(id);
         this.name = name;
         this.address = address;
         this.menu = menu;
-        this.owner = owner;
-    }
-
-    public Restaurant(String name, String address, List<Dish> menu, User owner) {
-        this(null, name, address, menu, owner);
     }
 }

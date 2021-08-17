@@ -20,17 +20,15 @@ CREATE TABLE users
 
 CREATE TABLE restaurants
 (
-    id      INTEGER   DEFAULT global_seq.nextval PRIMARY KEY,
+    id      INTEGER DEFAULT global_seq.nextval PRIMARY KEY,
     name    VARCHAR NOT NULL,
     address VARCHAR NOT NULL,
-    user_id INTEGER NOT NULL,
-    CONSTRAINT name_idx UNIQUE (name),
-    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+    CONSTRAINT name_idx UNIQUE (name)
 );
 
 CREATE TABLE dishes
 (
-    id          INTEGER   DEFAULT global_seq.nextval PRIMARY KEY,
+    id          INTEGER DEFAULT global_seq.nextval PRIMARY KEY,
     rest_id     INTEGER NOT NULL,
     date        DATE    NOT NULL,
     description VARCHAR NOT NULL,
@@ -41,7 +39,7 @@ CREATE TABLE dishes
 
 CREATE TABLE votes
 (
-    id      INTEGER   DEFAULT global_seq.nextval PRIMARY KEY,
+    id      INTEGER DEFAULT global_seq.nextval PRIMARY KEY,
     date    DATE    NOT NULL,
     user_id INTEGER NOT NULL,
     rest_id INTEGER NOT NULL,
