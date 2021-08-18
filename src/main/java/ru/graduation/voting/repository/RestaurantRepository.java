@@ -1,8 +1,6 @@
 package ru.graduation.voting.repository;
 
 import org.springframework.data.jpa.repository.EntityGraph;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 import ru.graduation.voting.model.Restaurant;
@@ -12,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Transactional(readOnly = true)
-public interface RestaurantRepository extends JpaRepository<Restaurant, Integer> {
+public interface RestaurantRepository extends BaseRepository<Restaurant> {
 
     Optional<Restaurant> getByNameIgnoreCase(String name);
 
@@ -28,8 +26,4 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
     @EntityGraph(attributePaths = {"menu"}, type = EntityGraph.EntityGraphType.LOAD)
     Optional<List<Restaurant>> getAllWithMenuBetweenDate(LocalDate startDate, LocalDate endDate);
 
-    @Modifying
-    @Transactional
-    @Query("DELETE FROM Restaurant r WHERE r.id=?1 AND r.owner.id=?2")
-    void delete(int id, int userId);
 }

@@ -2,15 +2,12 @@ package ru.graduation.voting.repository;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import ru.graduation.voting.model.Restaurant;
-
-import static ru.graduation.voting.web.SecurityUtil.authUserId;
 
 @SpringBootTest
 @Sql(scripts = "classpath:data.sql", config = @SqlConfig(encoding = "UTF-8"))

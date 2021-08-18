@@ -1,10 +1,9 @@
 package ru.graduation.voting.web;
 
-import ru.graduation.voting.model.User;
-
 import lombok.Getter;
 import lombok.ToString;
 import org.springframework.lang.NonNull;
+import ru.graduation.voting.model.User;
 
 @Getter
 @ToString(of = "user")
