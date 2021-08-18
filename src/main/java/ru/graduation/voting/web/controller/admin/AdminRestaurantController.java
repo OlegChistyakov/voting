@@ -1,62 +1,50 @@
 package ru.graduation.voting.web.controller.admin;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.graduation.voting.error.NotFoundException;
 import ru.graduation.voting.model.Restaurant;
-import ru.graduation.voting.repository.UserRepository;
 
 import javax.validation.Valid;
 
 import static ru.graduation.voting.util.ValidationUtil.assureIdConsistent;
 import static ru.graduation.voting.util.ValidationUtil.checkNew;
-import static ru.graduation.voting.web.SecurityUtil.authUserId;
 
 @RestController
 @Slf4j
+@AllArgsConstructor
 @RequestMapping(value = "api/v1/admin/restaurant", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AdminRestaurantController extends AbstractAdminController {
 
-    private final UserRepository userRepository;
-
-    public AdminRestaurantController(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Restaurant> create(@Valid @RequestBody Restaurant restaurant) {
-        int userId = authUserId();
-        log.info("create restaurant by name: {} for user: {}", restaurant.getName(), userId);
+        log.info("Create restaurant by name: {}", restaurant.getName());
         checkNew(restaurant);
-        Restaurant created = save(restaurant, userId);
-        return new ResponseEntity<>(created, HttpStatus.CREATED);
+        restaurant = restaurantRepository.save(restaurant);
+        return new ResponseEntity<>(restaurant, HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@PathVariable Integer id,
-                       @RequestBody Restaurant restaurant) {
-        int userId = authUserId();
-        log.info("update restaurant id: {} for user: {}", id, userId);
+                       @Valid @RequestBody Restaurant restaurant) {
+        log.info("Update restaurant id: {}", id);
         assureIdConsistent(restaurant, id);
-        save(restaurant, userId);
+        if (restaurantRepository.existsById(id)) {
+            restaurantRepository.save(restaurant);
+        } else {
+            throw new NotFoundException("The restaurant by id: " + id + " not exists");
+        }
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int id) {
-        int userId = authUserId();
-        log.info("delete restaurant {} for user {}", id, userId);
-        restaurantRepository.delete(id, userId);
-    }
-
-    Restaurant save(Restaurant restaurant, int userId) {
-        if (!restaurant.isNew() && getRestaurant(restaurant.getId(), userId) == null) {
-            return null;
-        }
-        restaurant.setOwner(userRepository.getById(userId));
-        return restaurantRepository.save(restaurant);
+        log.info("Delete restaurant {}", id);
+        restaurantRepository.deleteExisted(id);
     }
 }

@@ -3,6 +3,7 @@ package ru.graduation.voting.model;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import org.hibernate.Hibernate;
 import org.springframework.data.domain.Persistable;
+import org.springframework.data.util.ProxyUtils;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
@@ -57,7 +58,7 @@ public abstract class AbstractEntity implements Persistable<Integer> {
         if (this == o) {
             return true;
         }
-        if (o == null || !getClass().equals(Hibernate.getClass(o))) {
+        if (o == null || !getClass().equals(ProxyUtils.getUserClass(o))) {
             return false;
         }
         AbstractEntity that = (AbstractEntity) o;

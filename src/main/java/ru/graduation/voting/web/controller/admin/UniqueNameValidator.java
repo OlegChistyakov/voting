@@ -33,7 +33,10 @@ public class UniqueNameValidator implements org.springframework.validation.Valid
         }
 
         if (request.getMethod().equals("PUT")) {
-            if (validRestaurant.getId() != null && foundRestaurant.id() == foundRestaurant.id()) {
+            int idValidRestaurant = request
+                    .getRequestURI()
+                    .transform(s -> Integer.parseInt(s.substring(s.lastIndexOf("/") + 1)));
+            if (idValidRestaurant == foundRestaurant.id()) {
                 return;
             }
         }
