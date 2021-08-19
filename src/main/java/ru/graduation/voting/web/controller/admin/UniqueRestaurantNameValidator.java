@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Component
 @AllArgsConstructor
-public class UniqueNameValidator implements org.springframework.validation.Validator {
+public class UniqueRestaurantNameValidator implements org.springframework.validation.Validator {
 
     private final RestaurantRepository repository;
     private final HttpServletRequest request;

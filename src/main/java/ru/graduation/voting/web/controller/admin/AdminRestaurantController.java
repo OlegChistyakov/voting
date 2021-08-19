@@ -5,8 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import ru.graduation.voting.error.NotFoundException;
 import ru.graduation.voting.model.Restaurant;
 
 import javax.validation.Valid;
@@ -19,6 +19,13 @@ import static ru.graduation.voting.util.ValidationUtil.checkNew;
 @AllArgsConstructor
 @RequestMapping(value = "api/v1/admin/restaurant", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AdminRestaurantController extends AbstractAdminController {
+
+    private UniqueRestaurantNameValidator restaurantNameValidator;
+
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) {
+        binder.addValidators(restaurantNameValidator);
+    }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Restaurant> create(@Valid @RequestBody Restaurant restaurant) {
@@ -34,11 +41,8 @@ public class AdminRestaurantController extends AbstractAdminController {
                        @Valid @RequestBody Restaurant restaurant) {
         log.info("Update restaurant id: {}", id);
         assureIdConsistent(restaurant, id);
-        if (restaurantRepository.existsById(id)) {
-            restaurantRepository.save(restaurant);
-        } else {
-            throw new NotFoundException("The restaurant by id: " + id + " not exists");
-        }
+        getRefRestaurant(id);
+        restaurantRepository.save(restaurant);
     }
 
     @DeleteMapping("/{id}")

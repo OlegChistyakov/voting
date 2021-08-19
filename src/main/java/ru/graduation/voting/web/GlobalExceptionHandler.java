@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     public static final String EXCEPTION_RESTAURANT_DUPLICATE_NAME = "Restaurant with name already exists";
+    public static final String EXCEPTION_DUPLICATE_NAME = "By this date, there is already a food with this description";
 
     private final ErrorAttributes errorAttributes;
 
