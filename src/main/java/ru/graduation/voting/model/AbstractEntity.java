@@ -1,7 +1,6 @@
 package ru.graduation.voting.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import org.hibernate.Hibernate;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.util.ProxyUtils;
 import org.springframework.util.Assert;

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
+import ru.graduation.voting.error.NotFoundException;
 
 import static ru.graduation.voting.util.ValidationUtil.checkModification;
 
@@ -20,5 +21,10 @@ public interface BaseRepository<T> extends JpaRepository<T, Integer> {
 
     default void deleteExisted(int id) {
         checkModification(delete(id), id);
+    }
+
+    default T findExist(int id) {
+        return findById(id)
+                .orElseThrow(() -> new NotFoundException("The entity by id: " + id + " not exists"));
     }
 }
