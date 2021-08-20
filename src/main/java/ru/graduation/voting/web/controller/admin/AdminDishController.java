@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.graduation.voting.error.NotFoundException;
 import ru.graduation.voting.model.Dish;
 import ru.graduation.voting.model.Restaurant;
+import ru.graduation.voting.repository.DishRepository;
+import ru.graduation.voting.repository.RestaurantRepository;
 
 import javax.validation.Valid;
 
@@ -18,13 +20,16 @@ import static ru.graduation.voting.util.ValidationUtil.checkNew;
 @Slf4j
 @AllArgsConstructor
 @RequestMapping(value = "api/v1/admin/restaurant/{id}/dish", produces = MediaType.APPLICATION_JSON_VALUE)
-public class AdminDishController extends AbstractAdminController {
+public class AdminDishController {
+
+    private final RestaurantRepository restaurantRepository;
+    private final DishRepository dishRepository;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public Dish create(@Valid @RequestBody Dish dish, @PathVariable int id) {
         log.info("Create dish for restaurant id: {}", id);
         checkNew(dish);
-        Restaurant restaurant = getRefRestaurant(id);
+        Restaurant restaurant = restaurantRepository.findExist(id);
         dish.setRestaurant(restaurant);
         return dishRepository.save(dish);
     }
