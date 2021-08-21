@@ -18,11 +18,11 @@ import static ru.graduation.voting.util.ValidationUtil.checkNew;
 @RestController
 @Slf4j
 @AllArgsConstructor
-@RequestMapping(value = "api/v1/admin/restaurant", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/v1/admin/restaurant", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AdminRestaurantController {
 
+    static final String REST_URL = "api/v1/admin/restaurant";
     private final RestaurantRepository repository;
-
     private UniqueRestaurantNameValidator restaurantNameValidator;
 
     @InitBinder
