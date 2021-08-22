@@ -10,10 +10,14 @@ import ru.graduation.voting.model.Restaurant;
 
 import java.time.LocalDate;
 
+import static ru.graduation.voting.web.controller.restaurant.RestaurantController.OPEN_REST_URL;
+
 @RestController
 @Slf4j
-@RequestMapping(value = "api/v1/restaurant", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = OPEN_REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestaurantController extends AbstractRestaurantController {
+
+    public static final String OPEN_REST_URL = "api/v1/restaurant";
 
     @GetMapping("/{restId}")
     public ResponseEntity<Restaurant> getById(@PathVariable Integer restId) {
