@@ -30,23 +30,23 @@ class AdminRestaurantControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(ADMIN_MAIL)
     void createWithLocation() throws Exception {
-        Restaurant newRestaurant = getNew();
+        Restaurant newRestaurant = getNewRestaurant();
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(writeValue(newRestaurant)))
                 .andExpect(status().isCreated());
 
-        Restaurant created = MATCHER.readFromJson(action);
+        Restaurant created = RESTAURANT_MATCHER.readFromJson(action);
         int newId = created.id();
         newRestaurant.setId(newId);
-        MATCHER.assertMatch(created, newRestaurant);
-        MATCHER.assertMatch(repository.getById(newId), newRestaurant);
+        RESTAURANT_MATCHER.assertMatch(created, newRestaurant);
+        RESTAURANT_MATCHER.assertMatch(repository.getById(newId), newRestaurant);
     }
 
     @Test
     @WithUserDetails(ADMIN_MAIL)
     void createDuplicate() throws Exception {
-        Restaurant duplicate = getDuplicate();
+        Restaurant duplicate = AdminTestData.exist_rest;
         perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(writeValue(duplicate)))
@@ -58,22 +58,22 @@ class AdminRestaurantControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(ADMIN_MAIL)
     void update() throws Exception {
-        Restaurant updated = getUpdate();
-        perform(MockMvcRequestBuilders.put(REST_URL + REST_ID)
+        Restaurant updated = getUpdateRestaurant();
+        perform(MockMvcRequestBuilders.put(REST_URL + EXIST_REST_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(writeValue(updated)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
 
-        MATCHER.assertMatch(repository.getById(REST_ID), getUpdate());
+        RESTAURANT_MATCHER.assertMatch(repository.getById(EXIST_REST_ID), getUpdateRestaurant());
     }
 
     @Test
     @WithUserDetails(ADMIN_MAIL)
     void updateNotExist() throws Exception {
-        Restaurant updated = getUpdate();
+        Restaurant updated = getUpdateRestaurant();
         updated.setId(null);
-        perform(MockMvcRequestBuilders.put(REST_URL + NON_EXIST_REST_ID)
+        perform(MockMvcRequestBuilders.put(REST_URL + NON_EXIST_ENTITY_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(writeValue(updated)))
                 .andDo(print())
@@ -84,9 +84,9 @@ class AdminRestaurantControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(ADMIN_MAIL)
     void updateDuplicate() throws Exception {
-        Restaurant duplicate = getDuplicate();
+        Restaurant duplicate = AdminTestData.exist_rest;
         duplicate.setId(null);
-        perform(MockMvcRequestBuilders.put(REST_URL + (REST_ID + 1))
+        perform(MockMvcRequestBuilders.put(REST_URL + (EXIST_REST_ID + 1))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(writeValue(duplicate)))
                 .andDo(print())
@@ -97,23 +97,23 @@ class AdminRestaurantControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void delete() throws Exception {
-        perform(MockMvcRequestBuilders.delete(REST_URL + REST_ID))
+        perform(MockMvcRequestBuilders.delete(REST_URL + EXIST_REST_ID))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-        assertFalse(repository.findById(REST_ID).isPresent());
+        assertFalse(repository.findById(EXIST_REST_ID).isPresent());
     }
 
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void deleteNotFound() throws Exception {
-        perform(MockMvcRequestBuilders.delete(REST_URL + NON_EXIST_REST_ID))
+        perform(MockMvcRequestBuilders.delete(REST_URL + NON_EXIST_ENTITY_ID))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }
 
     @Test
     void deleteUnAuth() throws Exception {
-        perform(MockMvcRequestBuilders.delete(REST_URL + REST_ID))
+        perform(MockMvcRequestBuilders.delete(REST_URL + EXIST_REST_ID))
                 .andExpect(status().isUnauthorized());
     }
 }

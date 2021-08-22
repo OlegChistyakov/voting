@@ -1,4 +1,4 @@
-package ru.graduation.voting.web.controller.restaurant;
+package ru.graduation.voting.web.controller.open;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

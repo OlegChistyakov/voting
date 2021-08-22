@@ -1,4 +1,4 @@
-package ru.graduation.voting.web.controller.restaurant;
+package ru.graduation.voting.web.controller.open;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;

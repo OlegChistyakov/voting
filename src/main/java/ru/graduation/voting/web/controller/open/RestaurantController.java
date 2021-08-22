@@ -1,4 +1,4 @@
-package ru.graduation.voting.web.controller.restaurant;
+package ru.graduation.voting.web.controller.open;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -10,14 +10,14 @@ import ru.graduation.voting.model.Restaurant;
 
 import java.time.LocalDate;
 
-import static ru.graduation.voting.web.controller.restaurant.RestaurantController.OPEN_REST_URL;
+import static ru.graduation.voting.web.controller.open.RestaurantController.OPEN_REST_URL;
 
 @RestController
 @Slf4j
 @RequestMapping(value = OPEN_REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestaurantController extends AbstractRestaurantController {
 
-    public static final String OPEN_REST_URL = "api/v1/restaurant";
+    public static final String OPEN_REST_URL = "/api/v1/restaurant";
 
     @GetMapping("/{restId}")
     public ResponseEntity<Restaurant> getById(@PathVariable Integer restId) {
