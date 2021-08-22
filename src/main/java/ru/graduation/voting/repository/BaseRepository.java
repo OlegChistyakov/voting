@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.graduation.voting.error.NotFoundException;
 
 import static ru.graduation.voting.util.ValidationUtil.checkModification;
+import static ru.graduation.voting.web.GlobalExceptionHandler.EXCEPTION_NOT_EXIST_ENTITY;
 
 @NoRepositoryBean
 public interface BaseRepository<T> extends JpaRepository<T, Integer> {
@@ -25,6 +26,6 @@ public interface BaseRepository<T> extends JpaRepository<T, Integer> {
 
     default T findExist(int id) {
         return findById(id)
-                .orElseThrow(() -> new NotFoundException("The entity by id: " + id + " not exists"));
+                .orElseThrow(() -> new NotFoundException(EXCEPTION_NOT_EXIST_ENTITY));
     }
 }
