@@ -21,7 +21,6 @@ import static ru.graduation.voting.web.controller.open.DishController.OPEN_DISH_
 public class DishController {
 
     public static final String OPEN_DISH_URL = "/api/v1/dish";
-
     private final DishRepository dishRepository;
 
     @GetMapping("/{id}")
