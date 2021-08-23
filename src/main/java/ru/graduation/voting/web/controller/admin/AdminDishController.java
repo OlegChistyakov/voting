@@ -18,6 +18,7 @@ import java.net.URI;
 
 import static ru.graduation.voting.util.ValidationUtil.assureIdConsistent;
 import static ru.graduation.voting.util.ValidationUtil.checkNew;
+import static ru.graduation.voting.web.GlobalExceptionHandler.EXCEPTION_NOT_EXIST_ENTITY;
 import static ru.graduation.voting.web.controller.admin.AdminDishController.ADMIN_DISH_URL;
 import static ru.graduation.voting.web.controller.open.DishController.OPEN_DISH_URL;
 
@@ -51,7 +52,7 @@ public class AdminDishController {
         assureIdConsistent(dish, dishId);
         Dish saveDish = dishRepository
                 .findByIdWithRestaurant(dishId, id)
-                .orElseThrow(() -> new NotFoundException("The dish by id: " + dishId + " in restaurant by id: " + id + " not exists"));
+                .orElseThrow(() -> new NotFoundException(EXCEPTION_NOT_EXIST_ENTITY));
         dish.setRestaurant(saveDish.getRestaurant());
         dishRepository.save(dish);
     }
