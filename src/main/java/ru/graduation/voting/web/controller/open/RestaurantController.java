@@ -49,26 +49,26 @@ public class RestaurantController {
                                                                  @RequestParam @Nullable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
                                                                  @RequestParam @Nullable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
         log.info("Get restaurant by id: {} with menu from start date: {} to end date: {}", restId, startDate, endDate);
-        return response(() -> repository.getWithMenuBetweenDate(restId, startDate, endDate));
+        return response(() -> repository.getWithMenuBetweenDate(restId, startDayOrMin(startDate), endDayOrMax(endDate)));
     }
 
     /*Collection*/
 
     @GetMapping
-    public List<Restaurant> get() {
+    public List<Restaurant> getAll() {
         log.info("Get all restaurants");
         return repository.findAll();
     }
 
     @GetMapping("/with-today-menu")
     @Cacheable("restaurants")
-    public ResponseEntity<List<Restaurant>> getWithTodayMenu() {
+    public ResponseEntity<List<Restaurant>> getAllWithTodayMenu() {
         log.info("Get all restaurants with today menu");
         return response(() -> repository.getAllWithMenuBetweenDate(LocalDate.now(), LocalDate.now()));
     }
 
     @GetMapping("/with-menu")
-    public ResponseEntity<List<Restaurant>> getWithMenuBetweenDate(
+    public ResponseEntity<List<Restaurant>> getAllWithMenuBetweenDate(
             @RequestParam @Nullable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
             @RequestParam @Nullable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
         log.info("Get all restaurants with menu from start date: {} to end date: {}", startDate, endDate);
