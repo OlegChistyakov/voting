@@ -10,7 +10,7 @@ import java.util.List;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.graduation.voting.web.controller.open.TestData.*;
+import static ru.graduation.voting.web.controller.open.OpenTestData.*;
 
 
 class RestaurantControllerTest extends AbstractControllerTest {
@@ -81,7 +81,7 @@ class RestaurantControllerTest extends AbstractControllerTest {
     void getAllWithTodayMenu() throws Exception {
         rest1.setMenu(getMenuByDate(REST1_ID, today));
         rest2.setMenu(getMenuByDate(REST2_ID, today));
-        perform(MockMvcRequestBuilders.get(REST_URL + "with-today-menu/"))
+        perform(MockMvcRequestBuilders.get(REST_URL + "with-menu/today"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(RESTAURANT_MATCHER.contentJson(List.of(rest1, rest2)));
@@ -91,7 +91,7 @@ class RestaurantControllerTest extends AbstractControllerTest {
     void getWithMenuBetweenDate() throws Exception {
         rest1.setMenu(getMenuByDate(REST1_ID, today));
         rest2.setMenu(getMenuByDate(REST2_ID, today));
-        perform(MockMvcRequestBuilders.get(REST_URL + "with-menu?startDate=" + today + "&endDate=" + today))
+        perform(MockMvcRequestBuilders.get(REST_URL + "with-menu/by?startDate=" + today + "&endDate=" + today))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(RESTAURANT_MATCHER.contentJson(List.of(rest1, rest2)));

@@ -60,14 +60,14 @@ public class RestaurantController {
         return repository.findAll();
     }
 
-    @GetMapping("/with-today-menu")
+    @GetMapping("/with-menu/today")
     @Cacheable("restaurants")
     public ResponseEntity<List<Restaurant>> getAllWithTodayMenu() {
         log.info("Get all restaurants with today menu");
         return response(() -> repository.getAllWithMenuBetweenDate(LocalDate.now(), LocalDate.now()));
     }
 
-    @GetMapping("/with-menu")
+    @GetMapping("/with-menu/by")
     public ResponseEntity<List<Restaurant>> getAllWithMenuBetweenDate(
             @RequestParam @Nullable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
             @RequestParam @Nullable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {

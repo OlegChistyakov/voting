@@ -2,6 +2,8 @@ package ru.graduation.voting.web.controller.admin;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,7 @@ import static ru.graduation.voting.web.controller.open.DishController.OPEN_DISH_
 @RestController
 @Slf4j
 @AllArgsConstructor
+@CacheConfig(cacheNames = "restaurants")
 @RequestMapping(value = ADMIN_DISH_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class AdminDishController {
 
@@ -33,6 +36,7 @@ public class AdminDishController {
     private final DishRepository dishRepository;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @CacheEvict(allEntries = true)
     public ResponseEntity<Dish> createWithLocation(@Valid @RequestBody Dish dish, @PathVariable int id) {
         log.info("Create dish for restaurant id: {}", id);
         checkNew(dish);
@@ -46,6 +50,7 @@ public class AdminDishController {
     }
 
     @PutMapping(value = "/{dishId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @CacheEvict(allEntries = true)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@PathVariable int id, @PathVariable int dishId, @RequestBody Dish dish) {
         log.info("Update dish id: {} for restaurant: {}", dishId, id);
@@ -58,6 +63,7 @@ public class AdminDishController {
     }
 
     @DeleteMapping(value = "/{dishId}")
+    @CacheEvict(allEntries = true)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int id, @PathVariable int dishId) {
         log.info("Delete dish id: {} from restaurant: {}", dishId, id);
