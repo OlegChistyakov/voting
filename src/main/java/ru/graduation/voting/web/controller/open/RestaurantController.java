@@ -38,6 +38,12 @@ public class RestaurantController {
         return response(() -> repository.findById(restId));
     }
 
+    @GetMapping("/{restId}/dish/{dishId}")
+    public ResponseEntity<Restaurant> getWithDish(@PathVariable int restId, @PathVariable int dishId) {
+        log.info("Get restaurant by id: {} with dish id: {}", restId, dishId);
+        return response(() -> repository.getWithDish(restId, dishId));
+    }
+
     @GetMapping("/{restId}/with-menu")
     public ResponseEntity<Restaurant> getByIdWithMenu(@PathVariable Integer restId) {
         log.info("Get restaurant by id: {} with menu history", restId);

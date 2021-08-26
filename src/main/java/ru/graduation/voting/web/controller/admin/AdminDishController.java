@@ -22,7 +22,8 @@ import static ru.graduation.voting.util.ValidationUtil.assureIdConsistent;
 import static ru.graduation.voting.util.ValidationUtil.checkNew;
 import static ru.graduation.voting.web.GlobalExceptionHandler.EXCEPTION_NOT_EXIST_ENTITY;
 import static ru.graduation.voting.web.controller.admin.AdminDishController.ADMIN_DISH_URL;
-import static ru.graduation.voting.web.controller.open.DishController.OPEN_DISH_URL;
+import static ru.graduation.voting.web.controller.open.RestaurantController.OPEN_REST_URL;
+
 
 @RestController
 @Slf4j
@@ -31,7 +32,7 @@ import static ru.graduation.voting.web.controller.open.DishController.OPEN_DISH_
 @RequestMapping(value = ADMIN_DISH_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class AdminDishController {
 
-    public static final String ADMIN_DISH_URL = "/api/v1/admin/restaurant/{id}/dish";
+    public static final String ADMIN_DISH_URL = "/api/v1/admin/restaurants/{id}/dish";
     private final RestaurantRepository restaurantRepository;
     private final DishRepository dishRepository;
 
@@ -44,8 +45,8 @@ public class AdminDishController {
         dish.setRestaurant(restaurant);
         dish = dishRepository.save(dish);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(OPEN_DISH_URL + "/{id}")
-                .buildAndExpand(dish.getId()).toUri();
+                .path(OPEN_REST_URL + "{restId}/dish/{dishId}")
+                .buildAndExpand(restaurant.getId(), dish.getId()).toUri();
         return ResponseEntity.created(uriOfNewResource).body(dish);
     }
 

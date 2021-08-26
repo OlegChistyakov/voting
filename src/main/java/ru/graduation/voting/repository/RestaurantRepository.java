@@ -18,6 +18,10 @@ public interface RestaurantRepository extends BaseRepository<Restaurant> {
     @EntityGraph(attributePaths = {"menu"}, type = EntityGraph.EntityGraphType.LOAD)
     Optional<Restaurant> getWithMenu(Integer restId);
 
+    @Query("SELECT r FROM Restaurant r JOIN FETCH r.menu m WHERE r.id=?1 AND m.id=?2")
+    @EntityGraph(attributePaths = {"menu"}, type = EntityGraph.EntityGraphType.LOAD)
+    Optional<Restaurant> getWithDish(Integer restId, Integer dishId);
+
     @Query("SELECT r FROM Restaurant r JOIN FETCH r.menu m WHERE r.id=?1 AND m.date>=?2 AND m.date<=?3")
     @EntityGraph(attributePaths = {"menu"}, type = EntityGraph.EntityGraphType.LOAD)
     Optional<Restaurant> getWithMenuBetweenDate(Integer restId, LocalDate startDate, LocalDate endDate);
