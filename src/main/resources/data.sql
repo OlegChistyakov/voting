@@ -34,7 +34,7 @@ VALUES (100003, now() - 1, 'yesterday''s dish_1 from rest_1', 546),
        (100005, now() - 10, 'very old dish', 1000);
 
 INSERT INTO votes (date, user_id, rest_id)
-VALUES (now(), 100000, 100003),
+VALUES (now() - 1, 100000, 100003),
        (now() - 10, 100000, 100004),
        (now(), 100001, 100003),
        (now() - 2, 100001, 100004);

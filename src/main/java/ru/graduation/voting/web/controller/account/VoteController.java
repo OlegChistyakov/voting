@@ -15,20 +15,24 @@ import ru.graduation.voting.repository.RestaurantRepository;
 import ru.graduation.voting.repository.VoteRepository;
 import ru.graduation.voting.web.AuthUser;
 
+import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
 import static ru.graduation.voting.util.DateUtil.END_TIME_VOTE;
+import static ru.graduation.voting.web.controller.account.VoteController.VOTE_URL;
 
 @RestController
 @Slf4j
 @AllArgsConstructor
-@RequestMapping(value = "api/v1/account/vote", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = VOTE_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class VoteController {
 
+    public static final String VOTE_URL = "/api/v1/account/vote";
     private final VoteRepository voteRepository;
     private final RestaurantRepository restaurantRepository;
+    private Clock clock;
 
     @GetMapping
     public List<Vote> getAll(@AuthenticationPrincipal AuthUser authUser) {
@@ -44,11 +48,12 @@ public class VoteController {
     }
 
     @PostMapping(value = "/{restId}")
-    public ResponseEntity<Vote> toVote(@AuthenticationPrincipal AuthUser authUser, @PathVariable int restId) {
+    public ResponseEntity<Vote> toVote(@AuthenticationPrincipal AuthUser authUser,
+                                       @PathVariable int restId) {
         log.info("Vote for restaurant by id: {}", restId);
 
         Vote found = voteRepository.findByUserIdToday(authUser.id()).orElse(null);
-        boolean possibleToVote = LocalTime.now().isBefore(END_TIME_VOTE);
+        boolean possibleToVote = LocalTime.now(clock).isBefore(END_TIME_VOTE);
         boolean alreadyVoted = found != null;
 
         if (possibleToVote) {

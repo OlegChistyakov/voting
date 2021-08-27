@@ -1,0 +1,25 @@
+package ru.graduation.voting.web.controller.account;
+
+import ru.graduation.voting.MatcherFactory;
+import ru.graduation.voting.model.User;
+import ru.graduation.voting.model.Vote;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import static ru.graduation.voting.web.controller.open.OpenTestData.rest1;
+import static ru.graduation.voting.web.controller.open.OpenTestData.rest2;
+
+public class AccountData {
+    public static final MatcherFactory.Matcher<Vote> MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Vote.class, "restaurant.menu", "user.registered", "user.roles");
+
+    public static final String USER_MAIL = "user@gmail.com";
+    public static final User user = new User(100_000, "User#1", USER_MAIL, "{noop}password", true, null, null);
+
+    public static final Vote vote1 = new Vote(100_015, LocalDate.now().minusDays(1), null, rest1);
+    public static final Vote vote2 = new Vote(100_016, LocalDate.now().minusDays(10), null, rest2);
+    public static final Vote firstVote = new Vote(100_019, LocalDate.now(), null, rest1);
+
+    public static final List<Vote> votes =List.of(vote1, vote2);
+
+}

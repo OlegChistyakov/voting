@@ -15,6 +15,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import ru.graduation.voting.util.JsonUtil;
 
 import java.sql.SQLException;
+import java.time.Clock;
 import java.util.List;
 
 @Configuration
@@ -26,6 +27,11 @@ public class WebConfig implements WebMvcConfigurer {
     Server h2Server() throws SQLException {
         log.info("Start H2 TCP server");
         return Server.createTcpServer("-tcp", "-tcpAllowOthers", "-tcpPort", "9092");
+    }
+
+    @Bean
+    Clock clock() {
+        return Clock.systemDefaultZone();
     }
 
     @Autowired
