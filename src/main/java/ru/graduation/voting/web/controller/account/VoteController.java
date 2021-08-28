@@ -21,6 +21,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 import static ru.graduation.voting.util.DateUtil.END_TIME_VOTE;
+import static ru.graduation.voting.web.GlobalExceptionHandler.EXCEPTION_METHOD_NOT_ALLOWED;
 import static ru.graduation.voting.web.GlobalExceptionHandler.EXCEPTION_NOT_EXIST_ENTITY;
 import static ru.graduation.voting.web.controller.account.VoteController.VOTE_URL;
 
@@ -68,7 +69,7 @@ public class VoteController {
                 return new ResponseEntity<>(vote, HttpStatus.OK);
             }
         } else {
-            throw new RequestNotBeExecutedException("Voting ended");
+            throw new RequestNotBeExecutedException(EXCEPTION_METHOD_NOT_ALLOWED);
         }
     }
 }
