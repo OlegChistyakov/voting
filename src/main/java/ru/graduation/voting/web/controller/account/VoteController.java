@@ -21,6 +21,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 import static ru.graduation.voting.util.DateUtil.END_TIME_VOTE;
+import static ru.graduation.voting.web.GlobalExceptionHandler.EXCEPTION_NOT_EXIST_ENTITY;
 import static ru.graduation.voting.web.controller.account.VoteController.VOTE_URL;
 
 @RestController
@@ -44,7 +45,7 @@ public class VoteController {
     public Vote get(@AuthenticationPrincipal AuthUser authUser, @PathVariable int id) {
         log.info("Get vote by id: {} for user: {}", id, authUser.id());
         return voteRepository.findByIdAndUserId(id, authUser.id())
-                .orElseThrow(() -> new NotFoundException("Vote by id:" + id + " not found"));
+                .orElseThrow(() -> new NotFoundException(EXCEPTION_NOT_EXIST_ENTITY));
     }
 
     @PostMapping(value = "/{restId}")
