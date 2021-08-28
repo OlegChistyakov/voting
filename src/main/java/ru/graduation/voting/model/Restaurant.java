@@ -16,12 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "restaurants")
-public class Restaurant extends AbstractEntity {
-
-    @Column(name = "name")
-    @NotBlank
-    @Size(min = 1, max = 100)
-    private String name;
+public class Restaurant extends NamedEntity {
 
     @Column(name = "address")
     @NotBlank
@@ -32,8 +27,7 @@ public class Restaurant extends AbstractEntity {
     private List<Dish> menu;
 
     public Restaurant(Integer id, String name, String address, List<Dish> menu) {
-        super(id);
-        this.name = name;
+        super(id, name);
         this.address = address;
         this.menu = menu;
     }

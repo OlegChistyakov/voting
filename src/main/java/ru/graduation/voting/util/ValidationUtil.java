@@ -1,21 +1,22 @@
 package ru.graduation.voting.util;
 
+import ru.graduation.voting.HasId;
 import ru.graduation.voting.error.IllegalRequestDataException;
 import ru.graduation.voting.error.NotFoundException;
-import ru.graduation.voting.model.AbstractEntity;
 
 public class ValidationUtil {
-    public static void assureIdConsistent(AbstractEntity entity, int id) {
-        if (entity.isNew()) {
-            entity.setId(id);
-        } else if (entity.id() != id) {
-            throw new IllegalRequestDataException(entity.getClass().getSimpleName() + " must has id=" + id);
+    public static void checkNew(HasId bean) {
+        if (!bean.isNew()) {
+            throw new IllegalRequestDataException(bean.getClass().getSimpleName() + " must be new (id=null)");
         }
     }
 
-    public static void checkNew(AbstractEntity entity) {
-        if (!entity.isNew()) {
-            throw new IllegalRequestDataException(entity.getClass().getSimpleName() + " must be new (id=null)");
+    //  Conservative when you reply, but accept liberally (http://stackoverflow.com/a/32728226/548473)
+    public static void assureIdConsistent(HasId bean, int id) {
+        if (bean.isNew()) {
+            bean.setId(id);
+        } else if (bean.id() != id) {
+            throw new IllegalRequestDataException(bean.getClass().getSimpleName() + " must has id=" + id);
         }
     }
 

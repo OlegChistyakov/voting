@@ -1,8 +1,6 @@
 package ru.graduation.voting.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +16,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Table(name = "votes", uniqueConstraints =
         {@UniqueConstraint(columnNames = {"user_id", "date"}, name = "votes_unique_date_user_idx")})
-public class Vote extends AbstractEntity {
+public class Vote extends BaseEntity {
 
     @Column(name = "date")
     LocalDate localDate;

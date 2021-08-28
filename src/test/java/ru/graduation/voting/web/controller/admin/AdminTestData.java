@@ -17,7 +17,7 @@ public class AdminTestData {
     public static final Restaurant exist_rest = new Restaurant(EXIST_REST_ID, "RestaurantName1", "address1", null);
 
     public static Restaurant getNewRestaurant() {
-        return new Restaurant("New name", "New address", null);
+        return new Restaurant(null, "New name", "New address", null);
     }
 
     public static Restaurant getUpdateRestaurant() {
@@ -25,7 +25,7 @@ public class AdminTestData {
     }
 
     public static Dish getNewDish() {
-        return new Dish("New dish", 500, LocalDate.now(), exist_rest);
+        return new Dish(null, "New dish", 500, LocalDate.now(), exist_rest);
     }
 
     public static Dish getUpdateDish() {

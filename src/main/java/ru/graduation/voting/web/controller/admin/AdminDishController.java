@@ -24,7 +24,6 @@ import static ru.graduation.voting.web.GlobalExceptionHandler.EXCEPTION_NOT_EXIS
 import static ru.graduation.voting.web.controller.admin.AdminDishController.ADMIN_DISH_URL;
 import static ru.graduation.voting.web.controller.open.RestaurantController.OPEN_REST_URL;
 
-
 @RestController
 @Slf4j
 @AllArgsConstructor

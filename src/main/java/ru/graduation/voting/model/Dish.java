@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @Table(name = "dishes")
-public class Dish extends AbstractEntity {
+public class Dish extends BaseEntity {
 
     @Column(name = "description")
     @NotBlank

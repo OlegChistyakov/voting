@@ -20,4 +20,7 @@ public interface VoteRepository extends BaseRepository<Vote> {
 
     Optional<Vote> findByIdAndUserId(int id, int userId);
 
+    @Transactional
+    void deleteAllByUserId(int userId);
+
 }
