@@ -13,7 +13,6 @@ public class ClockEnableVote {
     @Bean
     @Primary
     Clock clock() {
-        System.out.println("PUK");
         return Clock.fixed(Instant.parse("2021-08-27T10:15:30.00Z"), ZoneId.of("UTC"));
     }
 }

@@ -11,7 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.graduation.voting.web.GlobalExceptionHandler.EXCEPTION_METHOD_NOT_ALLOWED;
-import static ru.graduation.voting.web.controller.account.VoteController.VOTE_URL;
+import static ru.graduation.voting.web.controller.account.AccountVoteController.VOTE_URL;
 import static ru.graduation.voting.web.controller.open.OpenTestData.REST1_ID;
 import static ru.graduation.voting.web.controller.user.UserTestData.USER_MAIL1;
 

@@ -23,13 +23,13 @@ import java.util.List;
 import static ru.graduation.voting.util.DateUtil.END_TIME_VOTE;
 import static ru.graduation.voting.web.GlobalExceptionHandler.EXCEPTION_METHOD_NOT_ALLOWED;
 import static ru.graduation.voting.web.GlobalExceptionHandler.EXCEPTION_NOT_EXIST_ENTITY;
-import static ru.graduation.voting.web.controller.account.VoteController.VOTE_URL;
+import static ru.graduation.voting.web.controller.account.AccountVoteController.VOTE_URL;
 
 @RestController
 @Slf4j
 @AllArgsConstructor
 @RequestMapping(value = VOTE_URL, produces = MediaType.APPLICATION_JSON_VALUE)
-public class VoteController {
+public class AccountVoteController {
 
     public static final String VOTE_URL = "/api/v1/account/vote";
     private final VoteRepository voteRepository;

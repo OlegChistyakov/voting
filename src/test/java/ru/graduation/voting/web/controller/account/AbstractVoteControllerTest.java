@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ru.graduation.voting.AbstractControllerTest;
 import ru.graduation.voting.repository.VoteRepository;
 
-import static ru.graduation.voting.web.controller.account.VoteController.VOTE_URL;
+import static ru.graduation.voting.web.controller.account.AccountVoteController.VOTE_URL;
 
 public abstract class AbstractVoteControllerTest extends AbstractControllerTest {
     protected final String URL = VOTE_URL + "/";

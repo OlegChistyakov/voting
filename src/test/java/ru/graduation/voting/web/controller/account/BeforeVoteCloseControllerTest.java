@@ -9,13 +9,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.graduation.voting.model.Vote;
 import ru.graduation.voting.web.controller.config.ClockEnableVote;
 
-import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.graduation.voting.web.GlobalExceptionHandler.EXCEPTION_NOT_EXIST_ENTITY;
 import static ru.graduation.voting.web.controller.account.AccountData.*;
-import static ru.graduation.voting.web.controller.account.VoteController.VOTE_URL;
+import static ru.graduation.voting.web.controller.account.AccountVoteController.VOTE_URL;
 import static ru.graduation.voting.web.controller.open.OpenTestData.REST1_ID;
 import static ru.graduation.voting.web.controller.open.OpenTestData.REST2_ID;
 import static ru.graduation.voting.web.controller.user.UserTestData.*;
@@ -55,13 +52,5 @@ public class BeforeVoteCloseControllerTest extends AbstractVoteControllerTest {
         MATCHER.assertMatch(updated, reVoting);
         reVoting.setUser(user2);
         MATCHER.assertMatch(repository.getById(newId), reVoting);
-    }
-
-    @Test
-    @WithUserDetails(USER_MAIL1)
-    void getNotOwn() throws Exception {
-        perform(MockMvcRequestBuilders.get(URL + vote4.id()))
-                .andExpect(status().isUnprocessableEntity())
-                .andExpect(content().string(containsString(EXCEPTION_NOT_EXIST_ENTITY)));
     }
 }

@@ -12,19 +12,15 @@ import static ru.graduation.voting.web.controller.open.OpenTestData.rest2;
 public class AccountData {
     public static final MatcherFactory.Matcher<Vote> MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Vote.class, "restaurant.menu", "user.registered");
 
-    public static final String USER_MAIL = "user@gmail.com";
-
     public static final Vote vote1 = new Vote(100_015, LocalDate.now().minusDays(1), null, rest1);
     public static final Vote vote2 = new Vote(100_016, LocalDate.now().minusDays(10), null, rest2);
     public static final Vote vote3 = new Vote(100_017, LocalDate.now(), null, rest1);
-    public static final Vote vote4 = new Vote(100_018, LocalDate.now().minusDays(2), null, rest2);
 
     public static final List<Vote> votesUser1 =List.of(vote1, vote2);
 
     public static Vote getReVoting() {
         return new Vote(100_017, LocalDate.now(), null, rest2);
     }
-
     public static Vote getFirstVote() {
         return new Vote(100_019, LocalDate.now(), null, rest1);
     }
