@@ -1,4 +1,4 @@
-package ru.graduation.voting.web.controller.account;
+package ru.graduation.voting.web.controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.lang.NonNull;

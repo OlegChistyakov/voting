@@ -9,18 +9,15 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.graduation.voting.model.User;
-import ru.graduation.voting.repository.UserRepository;
-import ru.graduation.voting.repository.VoteRepository;
 import ru.graduation.voting.to.UserTo;
-import ru.graduation.voting.web.AuthUser;
 import ru.graduation.voting.util.UserUtil;
+import ru.graduation.voting.web.AuthUser;
+import ru.graduation.voting.web.controller.AbstractUserController;
 
 import javax.validation.Valid;
-
 import java.net.URI;
 
 import static ru.graduation.voting.util.ValidationUtil.assureIdConsistent;
@@ -32,17 +29,9 @@ import static ru.graduation.voting.web.controller.account.AccountController.ACCO
 @Slf4j
 @AllArgsConstructor
 @CacheConfig(cacheNames = "users")
-public class AccountController {
+public class AccountController extends AbstractUserController {
 
     public static final String ACCOUNT_URL = "/api/v1/account/";
-    private final UserRepository userRepository;
-    private final VoteRepository voteRepository;
-    private UniqueMailValidator emailValidator;
-
-    @InitBinder
-    protected void initBinder(WebDataBinder binder) {
-        binder.addValidators(emailValidator);
-    }
 
     @GetMapping
     public User get(@AuthenticationPrincipal AuthUser authUser) {
@@ -53,7 +42,7 @@ public class AccountController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Transactional
     public void delete(@AuthenticationPrincipal AuthUser authUser) {
-        userRepository.getById(authUser.id()).setEnabled(false);
+        super.delete(authUser.id());
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -76,9 +65,5 @@ public class AccountController {
         assureIdConsistent(userTo, authUser.id());
         User user = authUser.getUser();
         prepareAndSave(UserUtil.updateFromTo(user, userTo));
-    }
-
-    protected User prepareAndSave(User user) {
-        return userRepository.save(UserUtil.prepareToSave(user));
     }
 }
