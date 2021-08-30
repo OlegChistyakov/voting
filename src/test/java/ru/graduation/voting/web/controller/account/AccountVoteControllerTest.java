@@ -11,7 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.graduation.voting.web.GlobalExceptionHandler.EXCEPTION_NOT_EXIST_ENTITY;
 import static ru.graduation.voting.web.controller.account.AccountData.*;
-import static ru.graduation.voting.web.controller.user.UserTestData.USER_MAIL1;
+import static ru.graduation.voting.web.controller.UserTestData.USER_MAIL1;
 
 class AccountVoteControllerTest extends AbstractVoteControllerTest {
 

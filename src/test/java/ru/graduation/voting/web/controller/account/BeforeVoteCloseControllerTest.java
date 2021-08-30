@@ -12,10 +12,11 @@ import ru.graduation.voting.web.controller.config.ClockEnableVote;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static ru.graduation.voting.web.controller.account.AccountData.*;
+import static ru.graduation.voting.web.controller.account.AccountData.MATCHER;
 import static ru.graduation.voting.web.controller.account.AccountVoteController.VOTE_URL;
 import static ru.graduation.voting.web.controller.open.OpenTestData.REST1_ID;
 import static ru.graduation.voting.web.controller.open.OpenTestData.REST2_ID;
-import static ru.graduation.voting.web.controller.user.UserTestData.*;
+import static ru.graduation.voting.web.controller.UserTestData.*;
 
 @SpringBootTest(classes = ClockEnableVote.class)
 public class BeforeVoteCloseControllerTest extends AbstractVoteControllerTest {

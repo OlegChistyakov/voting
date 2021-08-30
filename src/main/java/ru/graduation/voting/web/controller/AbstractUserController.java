@@ -8,13 +8,17 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import ru.graduation.voting.model.User;
 import ru.graduation.voting.repository.UserRepository;
+import ru.graduation.voting.repository.VoteRepository;
 import ru.graduation.voting.util.UserUtil;
 
 @Slf4j
 public abstract class AbstractUserController {
 
     @Autowired
-    protected UserRepository repository;
+    protected UserRepository userRepository;
+
+    @Autowired
+    protected VoteRepository voteRepository;
 
     @Autowired
     private UniqueMailValidator emailValidator;
@@ -25,17 +29,18 @@ public abstract class AbstractUserController {
     }
 
     public ResponseEntity<User> get(int id) {
-        log.info("get {}", id);
-        return ResponseEntity.of(repository.findById(id));
+        log.info("Get user by id: {}", id);
+        return ResponseEntity.of(userRepository.findById(id));
     }
 
     @CacheEvict(value = "users", allEntries = true)
     public void delete(int id) {
-        log.info("delete {}", id);
-        repository.findExist(id).setEnabled(false);
+        log.info("Delete account by id: {}", id);
+        voteRepository.deleteAllByUserId(id);
+        userRepository.deleteExisted(id);
     }
 
     protected User prepareAndSave(User user) {
-        return repository.save(UserUtil.prepareToSave(user));
+        return userRepository.save(UserUtil.prepareToSave(user));
     }
 }

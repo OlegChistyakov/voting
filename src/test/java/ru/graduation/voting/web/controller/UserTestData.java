@@ -1,5 +1,6 @@
-package ru.graduation.voting.web.controller.user;
+package ru.graduation.voting.web.controller;
 
+import ru.graduation.voting.MatcherFactory;
 import ru.graduation.voting.model.Role;
 import ru.graduation.voting.model.User;
 
@@ -7,6 +8,9 @@ import java.util.Collections;
 import java.util.Date;
 
 public class UserTestData {
+
+    public static final MatcherFactory.Matcher<User> MATCHER = MatcherFactory.usingIgnoringFieldsComparator(User.class, "registered", "password");
+
     public static final int USER_ID1 = 100_000;
     public static final int USER_ID2 = 100_001;
     public static final int ADMIN_ID = 100_002;

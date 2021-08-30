@@ -13,7 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static ru.graduation.voting.web.GlobalExceptionHandler.EXCEPTION_METHOD_NOT_ALLOWED;
 import static ru.graduation.voting.web.controller.account.AccountVoteController.VOTE_URL;
 import static ru.graduation.voting.web.controller.open.OpenTestData.REST1_ID;
-import static ru.graduation.voting.web.controller.user.UserTestData.USER_MAIL1;
+import static ru.graduation.voting.web.controller.UserTestData.USER_MAIL1;
 
 @SpringBootTest(classes = ClockDisableVote.class)
 public class AfterVoteCloseControllerTest extends AbstractVoteControllerTest {

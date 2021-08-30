@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.graduation.voting.model.User;
+import ru.graduation.voting.repository.VoteRepository;
 import ru.graduation.voting.to.UserTo;
 import ru.graduation.voting.util.UserUtil;
 import ru.graduation.voting.web.AuthUser;
@@ -22,14 +23,14 @@ import java.net.URI;
 
 import static ru.graduation.voting.util.ValidationUtil.assureIdConsistent;
 import static ru.graduation.voting.util.ValidationUtil.checkNew;
-import static ru.graduation.voting.web.controller.account.AccountController.ACCOUNT_URL;
+import static ru.graduation.voting.web.controller.account.ProfileController.ACCOUNT_URL;
 
 @RestController
 @RequestMapping(value = ACCOUNT_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
 @AllArgsConstructor
 @CacheConfig(cacheNames = "users")
-public class AccountController extends AbstractUserController {
+public class ProfileController extends AbstractUserController {
 
     public static final String ACCOUNT_URL = "/api/v1/account/";
 
@@ -40,7 +41,7 @@ public class AccountController extends AbstractUserController {
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @Transactional
+    @CacheEvict(value = "users",allEntries = true)
     public void delete(@AuthenticationPrincipal AuthUser authUser) {
         super.delete(authUser.id());
     }
