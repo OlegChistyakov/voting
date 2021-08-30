@@ -9,14 +9,18 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.graduation.voting.model.Vote;
 import ru.graduation.voting.web.controller.config.ClockEnableVote;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static ru.graduation.voting.web.controller.account.AccountData.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static ru.graduation.voting.web.GlobalExceptionHandler.EXCEPTION_REPEAT_REQUEST;
+import static ru.graduation.voting.web.GlobalExceptionHandler.EXCEPTION_VOTE_CLOSE;
+import static ru.graduation.voting.web.controller.UserTestData.*;
 import static ru.graduation.voting.web.controller.account.AccountData.MATCHER;
+import static ru.graduation.voting.web.controller.account.AccountData.*;
 import static ru.graduation.voting.web.controller.account.AccountVoteController.VOTE_URL;
 import static ru.graduation.voting.web.controller.open.OpenTestData.REST1_ID;
 import static ru.graduation.voting.web.controller.open.OpenTestData.REST2_ID;
-import static ru.graduation.voting.web.controller.UserTestData.*;
 
 @SpringBootTest(classes = ClockEnableVote.class)
 public class BeforeVoteCloseControllerTest extends AbstractVoteControllerTest {
@@ -49,9 +53,17 @@ public class BeforeVoteCloseControllerTest extends AbstractVoteControllerTest {
                 .andExpect(MATCHER.contentJson(reVoting));
 
         Vote updated = MATCHER.readFromJson(action);
-        int newId = updated.id();
         MATCHER.assertMatch(updated, reVoting);
         reVoting.setUser(user2);
-        MATCHER.assertMatch(repository.getById(newId), reVoting);
+        MATCHER.assertMatch(repository.getById(reVoting.id()), reVoting);
+    }
+
+    @Test
+    @WithUserDetails(USER_MAIL2)
+    void toVoteSameRestaurant() throws Exception {
+        perform(MockMvcRequestBuilders.post(URL + REST1_ID))
+                .andDo(print())
+                .andExpect(status().isMethodNotAllowed())
+                .andExpect(content().string(containsString(EXCEPTION_REPEAT_REQUEST)));
     }
 }

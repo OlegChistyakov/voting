@@ -24,5 +24,4 @@ public class AccountData {
     public static Vote getFirstVote() {
         return new Vote(100_019, LocalDate.now(), null, rest1);
     }
-
 }
