@@ -18,6 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static ru.graduation.voting.util.JsonUtil.writeValue;
 import static ru.graduation.voting.web.GlobalExceptionHandler.EXCEPTION_NOT_EXIST_ENTITY;
 import static ru.graduation.voting.web.GlobalExceptionHandler.EXCEPTION_RESTAURANT_DUPLICATE_NAME;
+import static ru.graduation.voting.web.controller.UserTestData.ADMIN_MAIL;
 import static ru.graduation.voting.web.controller.admin.AdminTestData.*;
 
 class AdminRestaurantControllerTest extends AbstractControllerTest {

@@ -23,12 +23,12 @@ import static ru.graduation.voting.util.ValidationUtil.checkNew;
 
 
 @RestController
-@RequestMapping(value = AdminUserController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = AdminUserController.ADMIN_USER_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
 @CacheConfig(cacheNames = "users")
 public class AdminUserController extends AbstractUserController {
 
-    static final String REST_URL = "/api/v1/admin/users";
+    static final String ADMIN_USER_URL = "/api/v1/admin/users";
 
     @Override
     @GetMapping("/{id}")
@@ -57,7 +57,7 @@ public class AdminUserController extends AbstractUserController {
         checkNew(user);
         User created = prepareAndSave(user);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(REST_URL + "/{id}")
+                .path(ADMIN_USER_URL + "/{id}")
                 .buildAndExpand(created.getId()).toUri();
         return ResponseEntity.created(uriOfNewResource).body(created);
     }

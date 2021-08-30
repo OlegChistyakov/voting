@@ -17,11 +17,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.graduation.voting.util.JsonUtil.writeValue;
 import static ru.graduation.voting.web.GlobalExceptionHandler.EXCEPTION_NOT_EXIST_ENTITY;
+import static ru.graduation.voting.web.controller.UserTestData.ADMIN_MAIL;
 import static ru.graduation.voting.web.controller.admin.AdminTestData.*;
 
 class AdminDishControllerTest extends AbstractControllerTest {
 
-    private static final String REST_URL = AdminDishController.ADMIN_DISH_URL
+    private static final String DISH_URL = AdminDishController.ADMIN_DISH_URL
             .replaceAll("\\{id}", String.valueOf(EXIST_REST_ID)) + '/';
 
     @Autowired
@@ -31,7 +32,7 @@ class AdminDishControllerTest extends AbstractControllerTest {
     @WithUserDetails(ADMIN_MAIL)
     void createWithLocation() throws Exception {
         Dish newDish = getNewDish();
-        ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
+        ResultActions action = perform(MockMvcRequestBuilders.post(DISH_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(writeValue(newDish)))
                 .andExpect(status().isCreated());
@@ -48,7 +49,7 @@ class AdminDishControllerTest extends AbstractControllerTest {
     void update() throws Exception {
         Dish updated = getUpdateDish();
         updated.setId(null);
-        perform(MockMvcRequestBuilders.put(REST_URL + EXIST_DISH_ID)
+        perform(MockMvcRequestBuilders.put(DISH_URL + EXIST_DISH_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(writeValue(updated)))
                 .andDo(print())
@@ -62,7 +63,7 @@ class AdminDishControllerTest extends AbstractControllerTest {
     void updateNotExist() throws Exception {
         Dish updated = getUpdateDish();
         updated.setId(null);
-        perform(MockMvcRequestBuilders.put(REST_URL + NON_EXIST_ENTITY_ID)
+        perform(MockMvcRequestBuilders.put(DISH_URL + NON_EXIST_ENTITY_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(writeValue(updated)))
                 .andDo(print())
@@ -73,7 +74,7 @@ class AdminDishControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void delete() throws Exception {
-        perform(MockMvcRequestBuilders.delete(REST_URL + EXIST_DISH_ID))
+        perform(MockMvcRequestBuilders.delete(DISH_URL + EXIST_DISH_ID))
                 .andDo(print())
                 .andExpect(status().isNoContent());
         assertFalse(repository.findById(EXIST_DISH_ID).isPresent());
@@ -82,14 +83,14 @@ class AdminDishControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void deleteNotFound() throws Exception {
-        perform(MockMvcRequestBuilders.delete(REST_URL + NON_EXIST_ENTITY_ID))
+        perform(MockMvcRequestBuilders.delete(DISH_URL + NON_EXIST_ENTITY_ID))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }
 
     @Test
     void deleteUnAuth() throws Exception {
-        perform(MockMvcRequestBuilders.delete(REST_URL + EXIST_DISH_ID))
+        perform(MockMvcRequestBuilders.delete(DISH_URL + EXIST_DISH_ID))
                 .andExpect(status().isUnauthorized());
     }
 }

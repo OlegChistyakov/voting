@@ -3,6 +3,7 @@ package ru.graduation.voting.web.controller;
 import ru.graduation.voting.MatcherFactory;
 import ru.graduation.voting.model.Role;
 import ru.graduation.voting.model.User;
+import ru.graduation.voting.util.JsonUtil;
 
 import java.util.Collections;
 import java.util.Date;
@@ -30,5 +31,9 @@ public class UserTestData {
 
     public static User getUpdated() {
         return new User(USER_ID1, "UpdatedName", USER_MAIL1, "newPass", false, new Date(), Collections.singleton(Role.ADMIN));
+    }
+
+    public static String jsonWithPassword(User user, String passw) {
+        return JsonUtil.writeAdditionProps(user, "password", passw);
     }
 }
