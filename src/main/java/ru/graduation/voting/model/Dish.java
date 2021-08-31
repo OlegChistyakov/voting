@@ -1,6 +1,7 @@
 package ru.graduation.voting.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -34,6 +35,7 @@ public class Dish extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rest_id")
     @JsonBackReference
+    @Schema(hidden = true)
     private Restaurant restaurant;
 
     public Dish(Integer id, String description, int price, LocalDate date, Restaurant restaurant) {
@@ -42,9 +44,5 @@ public class Dish extends BaseEntity {
         this.price = price;
         this.date = date;
         this.restaurant = restaurant;
-    }
-
-    public Dish(String description, int price, LocalDate date, Restaurant restaurant) {
-        this(null, description, price, date, restaurant);
     }
 }

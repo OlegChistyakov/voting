@@ -35,9 +35,10 @@ public class RestaurantController {
     private final RestaurantRepository repository;
 
     @GetMapping("/{restId}")
-    public ResponseEntity<Restaurant> getById(@PathVariable Integer restId) {
+    public RestaurantTo getById(@PathVariable Integer restId) {
         log.info("Get restaurant by id: {}", restId);
-        return response(() -> repository.findById(restId));
+        Restaurant found = repository.findById(restId).orElseThrow(() -> new NotFoundException(EXCEPTION_NOT_EXIST_ENTITY));
+        return RestaurantTo.convert(found);
     }
 
     @GetMapping("/{restId}/dish/{dishId}")
