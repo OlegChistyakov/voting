@@ -12,11 +12,13 @@ import org.springframework.web.bind.annotation.*;
 import ru.graduation.voting.error.NotFoundException;
 import ru.graduation.voting.model.Restaurant;
 import ru.graduation.voting.repository.RestaurantRepository;
+import ru.graduation.voting.to.RestaurantTo;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import static ru.graduation.voting.util.DateUtil.endDayOrMax;
 import static ru.graduation.voting.util.DateUtil.startDayOrMin;
@@ -61,9 +63,11 @@ public class RestaurantController {
     /*Collection*/
 
     @GetMapping
-    public List<Restaurant> getAll() {
+    public List<RestaurantTo> getAll() {
         log.info("Get all restaurants");
-        return repository.findAll();
+        return repository.findAll().stream()
+                .map(RestaurantTo::convert)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/with-menu/today")

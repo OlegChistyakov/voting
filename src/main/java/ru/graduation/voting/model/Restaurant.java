@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.graduation.voting.to.RestaurantTo;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
