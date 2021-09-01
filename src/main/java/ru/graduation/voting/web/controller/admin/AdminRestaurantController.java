@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.graduation.voting.model.Restaurant;
 import ru.graduation.voting.repository.RestaurantRepository;
+import ru.graduation.voting.to.RestaurantTo;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -39,25 +40,26 @@ public class AdminRestaurantController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @CacheEvict(allEntries = true)
-    public ResponseEntity<Restaurant> createWithLocation(@Valid @RequestBody Restaurant restaurant) {
-        log.info("Create restaurant by name: {}", restaurant.getName());
-        checkNew(restaurant);
-        restaurant = repository.save(restaurant);
+    public ResponseEntity<RestaurantTo> createWithLocation(@Valid @RequestBody RestaurantTo to) {
+        log.info("Create restaurant by name: {}", to.getName());
+        checkNew(to);
+        Restaurant restaurant = repository.save(RestaurantTo.convert(to));
+        to.setId(restaurant.getId());
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(OPEN_REST_URL + "/{id}")
                 .buildAndExpand(restaurant.getId()).toUri();
-        return ResponseEntity.created(uriOfNewResource).body(restaurant);
+        return ResponseEntity.created(uriOfNewResource).body(to);
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @CacheEvict(allEntries = true)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@PathVariable Integer id,
-                       @Valid @RequestBody Restaurant restaurant) {
+                       @Valid @RequestBody RestaurantTo to) {
         log.info("Update restaurant id: {}", id);
-        assureIdConsistent(restaurant, id);
+        assureIdConsistent(to, id);
         repository.findExist(id);
-        repository.save(restaurant);
+        repository.save(RestaurantTo.convert(to));
     }
 
     @DeleteMapping("/{id}")

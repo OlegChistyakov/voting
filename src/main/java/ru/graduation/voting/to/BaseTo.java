@@ -12,7 +12,7 @@ import ru.graduation.voting.HasId;
 @Data
 public abstract class BaseTo implements HasId {
 
-    @Schema(hidden = true)
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     protected Integer id;
 
     @Override

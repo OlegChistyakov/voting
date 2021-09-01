@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import ru.graduation.voting.model.Restaurant;
 import ru.graduation.voting.repository.RestaurantRepository;
+import ru.graduation.voting.to.RestaurantTo;
 import ru.graduation.voting.web.GlobalExceptionHandler;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,12 +19,12 @@ public class UniqueRestaurantNameValidator implements org.springframework.valida
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return Restaurant.class.equals(clazz);
+        return RestaurantTo.class.equals(clazz);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
-        Restaurant validRestaurant = (Restaurant) target;
+        RestaurantTo validRestaurant = (RestaurantTo) target;
         Restaurant foundRestaurant = repository
                 .getByNameIgnoreCase(validRestaurant.getName())
                 .orElse(null);

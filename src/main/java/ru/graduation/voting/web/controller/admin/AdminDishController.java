@@ -7,7 +7,6 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.graduation.voting.error.NotFoundException;
@@ -46,7 +45,7 @@ public class AdminDishController {
         Dish dish = DishTo.convert(to, foundRest);
         dish = dishRepository.save(dish);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(OPEN_REST_URL + "{restId}/dish/{dishId}")
+                .path(OPEN_REST_URL + "/{restId}/dish/{dishId}")
                 .buildAndExpand(foundRest.getId(), dish.getId()).toUri();
         return ResponseEntity.created(uriOfNewResource).body(dish);
     }
