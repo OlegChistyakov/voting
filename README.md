@@ -1,10 +1,10 @@
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/cbc6811f037e436196abbafc36b09a62)](https://www.codacy.com/gh/OlegChistyakov/voting/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=OlegChistyakov/voting&amp;utm_campaign=Badge_Grade)
+[![Build Status](https://app.travis-ci.com/OlegChistyakov/voting.svg?branch=master)](https://app.travis-ci.com/OlegChistyakov/voting)
 <h1 align="center">Graduation project "Voting system" </h1>
 
-##The task is:
-###Design and implement a REST API using Hibernate/Spring/SpringMVC (or Spring-Boot) without frontend.
-
-Build a voting system for deciding where to have lunch.
+## The task is:
+### Design and implement a REST API using Hibernate/Spring/SpringMVC (or Spring-Boot) without frontend.
+#### Build a voting system for deciding where to have lunch.
 
 * 2 types of users: admin and regular users
 * Admin can input a restaurant and it's lunch menu of the day (2-5 items usually, just a dish name and price)
@@ -17,7 +17,7 @@ Build a voting system for deciding where to have lunch.
 * Each restaurant provides a new menu each day.
 
 -----------------------------
-##The project is built on a stack:
+## The project is built on a stack:
 * Spring Boot
 * Spring MVC
 * Spring Security
@@ -27,11 +27,16 @@ Build a voting system for deciding where to have lunch.
 * Lombok
 * JUnit
 -----------------------------
+## Some curl requests
 
-## Implementation.
+#### get all restaurants (without menu)
+`curl -s http://localhost:8080/api/v1/restaurants`
 
-### Curl samples (application deployed in application context `voting`).
-> For windows use `Git Bash`
+#### get all restaurants with today menu
+`curl -s http://localhost:8080/api/v1/restaurants/with-menu/today`
 
-#### get All Restaurants
-`curl -s http://localhost:8080/voting/restaurants`
+-----------------------------
+
+## Link to swagger:
+
+#### http://localhost:8080/swagger-ui.html
