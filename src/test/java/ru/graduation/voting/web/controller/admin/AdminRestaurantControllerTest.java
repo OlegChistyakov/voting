@@ -49,7 +49,7 @@ class AdminRestaurantControllerTest extends AbstractControllerTest {
     void createDuplicate() throws Exception {
         perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(writeValue(AdminTestData.exist_rest)))
+                .content(writeValue(exist_rest)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string(containsString(EXCEPTION_RESTAURANT_DUPLICATE_NAME)));
@@ -84,7 +84,7 @@ class AdminRestaurantControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(ADMIN_MAIL)
     void updateDuplicate() throws Exception {
-        Restaurant duplicate = AdminTestData.exist_rest;
+        Restaurant duplicate = exist_rest;
         duplicate.setId(null);
         perform(MockMvcRequestBuilders.put(REST_URL + (EXIST_REST_ID + 1))
                 .contentType(MediaType.APPLICATION_JSON)

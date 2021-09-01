@@ -41,7 +41,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
         for (HttpMessageConverter converter : converters) {
-            if (converter instanceof org.springframework.http.converter.json.MappingJackson2HttpMessageConverter) {
+            if (converter instanceof MappingJackson2HttpMessageConverter) {
                 ObjectMapper mapper = ((MappingJackson2HttpMessageConverter) converter).getObjectMapper();
                 mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
                 mapper.registerModule(new Hibernate5Module());

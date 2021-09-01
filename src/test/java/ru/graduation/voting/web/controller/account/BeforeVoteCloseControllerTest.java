@@ -14,7 +14,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.graduation.voting.web.GlobalExceptionHandler.EXCEPTION_REPEAT_REQUEST;
-import static ru.graduation.voting.web.GlobalExceptionHandler.EXCEPTION_VOTE_CLOSE;
 import static ru.graduation.voting.web.controller.UserTestData.*;
 import static ru.graduation.voting.web.controller.account.AccountData.MATCHER;
 import static ru.graduation.voting.web.controller.account.AccountData.*;
