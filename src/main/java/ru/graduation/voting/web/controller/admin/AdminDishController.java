@@ -7,6 +7,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.graduation.voting.error.NotFoundException;
@@ -14,8 +15,8 @@ import ru.graduation.voting.model.Dish;
 import ru.graduation.voting.model.Restaurant;
 import ru.graduation.voting.repository.DishRepository;
 import ru.graduation.voting.repository.RestaurantRepository;
+import ru.graduation.voting.to.DishTo;
 
-import javax.validation.Valid;
 import java.net.URI;
 
 import static ru.graduation.voting.util.ValidationUtil.assureIdConsistent;
@@ -37,29 +38,31 @@ public class AdminDishController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @CacheEvict(allEntries = true)
-    public ResponseEntity<Dish> createWithLocation(@Valid @RequestBody Dish dish, @PathVariable int id) {
+    public ResponseEntity<Dish> createWithLocation(@RequestBody DishTo to, @PathVariable int id) {
         log.info("Create dish for restaurant id: {}", id);
-        checkNew(dish);
-        Restaurant restaurant = restaurantRepository.findExist(id);
-        dish.setRestaurant(restaurant);
+        checkNew(to);
+
+        Restaurant foundRest = restaurantRepository.findExist(id);
+        Dish dish = DishTo.convert(to, foundRest);
         dish = dishRepository.save(dish);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(OPEN_REST_URL + "{restId}/dish/{dishId}")
-                .buildAndExpand(restaurant.getId(), dish.getId()).toUri();
+                .buildAndExpand(foundRest.getId(), dish.getId()).toUri();
         return ResponseEntity.created(uriOfNewResource).body(dish);
     }
 
     @PutMapping(value = "/{dishId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @CacheEvict(allEntries = true)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@PathVariable int id, @PathVariable int dishId, @RequestBody Dish dish) {
+    public void update(@PathVariable int id, @PathVariable int dishId, @RequestBody DishTo to) {
         log.info("Update dish id: {} for restaurant: {}", dishId, id);
-        assureIdConsistent(dish, dishId);
+        assureIdConsistent(to, dishId);
+
         Dish saveDish = dishRepository
                 .findByIdWithRestaurant(dishId, id)
                 .orElseThrow(() -> new NotFoundException(EXCEPTION_NOT_EXIST_ENTITY));
-        dish.setRestaurant(saveDish.getRestaurant());
-        dishRepository.save(dish);
+        Dish updateDish = DishTo.convert(to, saveDish.getRestaurant());
+        dishRepository.save(updateDish);
     }
 
     @DeleteMapping(value = "/{dishId}")
