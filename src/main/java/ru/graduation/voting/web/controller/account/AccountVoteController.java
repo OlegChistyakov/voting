@@ -42,7 +42,7 @@ public class AccountVoteController {
     @GetMapping
     public List<VoteTo> getAll(@AuthenticationPrincipal AuthUser authUser) {
         log.info("Get vote history for user: {}", authUser.id());
-        return VoteUtil.convertList(voteRepository.getAll(authUser.id()));
+        return VoteUtil.convertList(voteRepository.getAllByUserId(authUser.id()));
     }
 
     @GetMapping("/{id}")
