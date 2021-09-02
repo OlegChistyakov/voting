@@ -9,6 +9,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.graduation.voting.AbstractControllerTest;
 import ru.graduation.voting.model.Dish;
 import ru.graduation.voting.repository.DishRepository;
+import ru.graduation.voting.web.controller.open.OpenTestData;
+
+import java.time.LocalDate;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -42,6 +45,17 @@ class AdminDishControllerTest extends AbstractControllerTest {
         newDish.setId(newId);
         DISH_MATCHER.assertMatch(created, newDish);
         DISH_MATCHER.assertMatch(repository.getById(newId), newDish);
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_MAIL)
+    void createInvalid() throws Exception {
+        Dish invalid = new Dish(null, "", 1, LocalDate.now(), OpenTestData.rest1);
+        perform(MockMvcRequestBuilders.post(DISH_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(writeValue(invalid)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
     }
 
     @Test

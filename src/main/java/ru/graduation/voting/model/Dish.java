@@ -7,9 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 @Entity
@@ -20,16 +17,12 @@ import java.time.LocalDate;
 public class Dish extends BaseEntity {
 
     @Column(name = "description")
-    @NotBlank
-    @Size(min = 2, max = 100)
     private String description;
 
     @Column(name = "price")
-    @NotNull
     private int price;
 
     @Column(name = "date")
-    @NotNull
     private LocalDate date;
 
     @ManyToOne(fetch = FetchType.LAZY)

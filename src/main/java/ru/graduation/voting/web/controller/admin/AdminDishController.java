@@ -15,7 +15,9 @@ import ru.graduation.voting.model.Restaurant;
 import ru.graduation.voting.repository.DishRepository;
 import ru.graduation.voting.repository.RestaurantRepository;
 import ru.graduation.voting.to.DishTo;
+import ru.graduation.voting.util.DishUtil;
 
+import javax.validation.Valid;
 import java.net.URI;
 
 import static ru.graduation.voting.util.ValidationUtil.assureIdConsistent;
@@ -37,12 +39,12 @@ public class AdminDishController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @CacheEvict(allEntries = true)
-    public ResponseEntity<Dish> createWithLocation(@RequestBody DishTo to, @PathVariable int id) {
+    public ResponseEntity<Dish> createWithLocation(@Valid @RequestBody DishTo to, @PathVariable int id) {
         log.info("Create dish for restaurant id: {}", id);
         checkNew(to);
 
         Restaurant foundRest = restaurantRepository.findExist(id);
-        Dish dish = DishTo.convert(to, foundRest);
+        Dish dish = DishUtil.convertFromTo(to, foundRest);
         dish = dishRepository.save(dish);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(OPEN_REST_URL + "/{restId}/dish/{dishId}")
@@ -53,14 +55,14 @@ public class AdminDishController {
     @PutMapping(value = "/{dishId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @CacheEvict(allEntries = true)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@PathVariable int id, @PathVariable int dishId, @RequestBody DishTo to) {
+    public void update(@PathVariable int id, @PathVariable int dishId, @Valid @RequestBody DishTo to) {
         log.info("Update dish id: {} for restaurant: {}", dishId, id);
         assureIdConsistent(to, dishId);
 
         Dish saveDish = dishRepository
                 .findByIdWithRestaurant(dishId, id)
                 .orElseThrow(() -> new NotFoundException(EXCEPTION_NOT_EXIST_ENTITY));
-        Dish updateDish = DishTo.convert(to, saveDish.getRestaurant());
+        Dish updateDish = DishUtil.convertFromTo(to, saveDish.getRestaurant());
         dishRepository.save(updateDish);
     }
 

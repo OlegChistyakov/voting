@@ -3,12 +3,8 @@ package ru.graduation.voting.to;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.Value;
-import ru.graduation.voting.model.Dish;
-import ru.graduation.voting.model.Restaurant;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 
 @Value
@@ -21,12 +17,10 @@ public class DishTo extends BaseTo {
     String description;
 
     @NotNull
+    @Min(10)
+    @Max(5000)
     int price;
 
     @NotNull
     LocalDate date;
-
-    public static Dish convert(DishTo to, Restaurant restaurant) {
-        return new Dish(to.id, to.description, to.getPrice(), to.getDate(), restaurant);
-    }
 }
