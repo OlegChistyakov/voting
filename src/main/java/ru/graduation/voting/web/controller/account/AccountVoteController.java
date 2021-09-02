@@ -15,6 +15,8 @@ import ru.graduation.voting.model.User;
 import ru.graduation.voting.model.Vote;
 import ru.graduation.voting.repository.RestaurantRepository;
 import ru.graduation.voting.repository.VoteRepository;
+import ru.graduation.voting.to.VoteTo;
+import ru.graduation.voting.util.VoteUtil;
 import ru.graduation.voting.web.AuthUser;
 
 import java.time.Clock;
@@ -38,26 +40,28 @@ public class AccountVoteController {
     private Clock clock;
 
     @GetMapping
-    public List<Vote> getAll(@AuthenticationPrincipal AuthUser authUser) {
+    public List<VoteTo> getAll(@AuthenticationPrincipal AuthUser authUser) {
         log.info("Get vote history for user: {}", authUser.id());
-        return voteRepository.getAll(authUser.id());
+        return VoteUtil.convertList(voteRepository.getAll(authUser.id()));
     }
 
     @GetMapping("/{id}")
-    public Vote get(@AuthenticationPrincipal AuthUser authUser, @PathVariable int id) {
+    public VoteTo get(@AuthenticationPrincipal AuthUser authUser, @PathVariable int id) {
         log.info("Get vote by id: {} for user: {}", id, authUser.id());
-        return voteRepository.findByIdAndUserId(id, authUser.id())
+        Vote found = voteRepository.findByIdAndUserId(id, authUser.id())
                 .orElseThrow(() -> new NotFoundException(EXCEPTION_NOT_EXIST_ENTITY));
+        return VoteUtil.convert(found);
     }
 
     @PostMapping(value = "/{restId}")
     @Transactional
-    public ResponseEntity<Vote> toVote(@AuthenticationPrincipal AuthUser authUser,
-                                       @PathVariable int restId) {
+    public ResponseEntity<VoteTo> toVote(@AuthenticationPrincipal AuthUser authUser,
+                                         @PathVariable int restId) {
         log.info("Vote for restaurant by id: {}", restId);
 
         Restaurant foundRestaurant = restaurantRepository.findExist(restId);
         Vote foundVote = voteRepository.findByUserIdToday(authUser.id()).orElse(null);
+
         boolean isVotingActive = LocalTime.now(clock).isBefore(END_TIME_VOTE);
         boolean alreadyVoted = foundVote != null;
 
@@ -65,15 +69,15 @@ public class AccountVoteController {
             if (alreadyVoted) {
                 checkRepeatVoice(restId, foundVote.getRestaurant());
                 foundVote.setRestaurant(foundRestaurant);
-                return new ResponseEntity<>(voteRepository.save(foundVote), HttpStatus.OK);
+                return new ResponseEntity<>(VoteUtil.convert(voteRepository.save(foundVote)), HttpStatus.OK);
             } else {
-                return createVote(authUser.getUser(), foundRestaurant);
+                return create(authUser.getUser(), foundRestaurant);
             }
         } else {
             if (alreadyVoted) {
                 throw new RequestNotBeExecutedException(EXCEPTION_VOTE_CLOSE);
             } else {
-                return createVote(authUser.getUser(), foundRestaurant);
+                return create(authUser.getUser(), foundRestaurant);
             }
         }
     }
@@ -84,8 +88,8 @@ public class AccountVoteController {
         }
     }
 
-    private ResponseEntity<Vote> createVote(User user, Restaurant restaurant) {
+    private ResponseEntity<VoteTo> create(User user, Restaurant restaurant) {
         Vote vote = voteRepository.save(new Vote(LocalDate.now(), user, restaurant));
-        return new ResponseEntity<>(vote, HttpStatus.OK);
+        return new ResponseEntity<>(VoteUtil.convert(vote), HttpStatus.OK);
     }
 }

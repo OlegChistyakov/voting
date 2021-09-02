@@ -19,7 +19,7 @@ import java.time.LocalDate;
 public class Vote extends BaseEntity {
 
     @Column(name = "date")
-    LocalDate localDate;
+    private LocalDate localDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
