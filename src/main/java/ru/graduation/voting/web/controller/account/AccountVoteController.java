@@ -42,7 +42,7 @@ public class AccountVoteController {
     @GetMapping
     public List<VoteTo> getAll(@AuthenticationPrincipal AuthUser authUser) {
         log.info("Get vote history for user: {}", authUser.id());
-        return VoteUtil.convertList(voteRepository.getAllByUserId(authUser.id()));
+        return VoteUtil.convertToListDTO(voteRepository.getAllByUserId(authUser.id()));
     }
 
     @GetMapping("/{id}")
@@ -50,7 +50,7 @@ public class AccountVoteController {
         log.info("Get vote by id: {} for user: {}", id, authUser.id());
         Vote found = voteRepository.findByIdAndUserId(id, authUser.id())
                 .orElseThrow(() -> new NotFoundException(EXCEPTION_NOT_EXIST_ENTITY));
-        return VoteUtil.convert(found);
+        return VoteUtil.convertToDTO(found);
     }
 
     @PostMapping(value = "/{restId}")
@@ -69,7 +69,7 @@ public class AccountVoteController {
             if (alreadyVoted) {
                 checkRepeatVoice(restId, foundVote.getRestaurant());
                 foundVote.setRestaurant(foundRestaurant);
-                return new ResponseEntity<>(VoteUtil.convert(voteRepository.save(foundVote)), HttpStatus.OK);
+                return new ResponseEntity<>(VoteUtil.convertToDTO(voteRepository.save(foundVote)), HttpStatus.OK);
             } else {
                 return create(authUser.getUser(), foundRestaurant);
             }
@@ -90,6 +90,6 @@ public class AccountVoteController {
 
     private ResponseEntity<VoteTo> create(User user, Restaurant restaurant) {
         Vote vote = voteRepository.save(new Vote(LocalDate.now(), user, restaurant));
-        return new ResponseEntity<>(VoteUtil.convert(vote), HttpStatus.OK);
+        return new ResponseEntity<>(VoteUtil.convertToDTO(vote), HttpStatus.OK);
     }
 }

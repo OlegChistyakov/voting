@@ -44,7 +44,7 @@ public class AdminDishController {
         checkNew(to);
 
         Restaurant foundRest = restaurantRepository.findExist(id);
-        Dish dish = DishUtil.convertFromTo(to, foundRest);
+        Dish dish = DishUtil.convertToModel(to, foundRest);
         dish = dishRepository.save(dish);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(OPEN_REST_URL + "/{restId}/dish/{dishId}")
@@ -62,7 +62,7 @@ public class AdminDishController {
         Dish saveDish = dishRepository
                 .findByIdWithRestaurant(dishId, id)
                 .orElseThrow(() -> new NotFoundException(EXCEPTION_NOT_EXIST_ENTITY));
-        Dish updateDish = DishUtil.convertFromTo(to, saveDish.getRestaurant());
+        Dish updateDish = DishUtil.convertToModel(to, saveDish.getRestaurant());
         dishRepository.save(updateDish);
     }
 

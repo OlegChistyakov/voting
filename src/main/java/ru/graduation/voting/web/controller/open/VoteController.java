@@ -31,17 +31,17 @@ public class VoteController {
 
     @GetMapping
     List<VoteTo> getAll() {
-        return VoteUtil.convertList(repository.findAll());
+        return VoteUtil.convertToListDTO(repository.findAll());
     }
 
     @GetMapping("/today")
     List<VoteTo> getAllToday() {
-        return VoteUtil.convertList(repository.getAllByBetweenDate(LocalDate.now(), LocalDate.now()));
+        return VoteUtil.convertToListDTO(repository.getAllByBetweenDate(LocalDate.now(), LocalDate.now()));
     }
 
     @GetMapping("/by")
     List<VoteTo> getAllBetweenDate(@RequestParam @Nullable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
                                    @RequestParam @Nullable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
-        return VoteUtil.convertList(repository.getAllByBetweenDate(startDayOrMin(startDate), endDayOrMax(endDate)));
+        return VoteUtil.convertToListDTO(repository.getAllByBetweenDate(startDayOrMin(startDate), endDayOrMax(endDate)));
     }
 }

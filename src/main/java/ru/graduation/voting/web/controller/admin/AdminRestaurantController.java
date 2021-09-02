@@ -44,7 +44,7 @@ public class AdminRestaurantController {
     public ResponseEntity<RestaurantTo> createWithLocation(@Valid @RequestBody RestaurantTo to) {
         log.info("Create restaurant by name: {}", to.getName());
         checkNew(to);
-        Restaurant restaurant = repository.save(RestaurantUtil.convert(to));
+        Restaurant restaurant = repository.save(RestaurantUtil.convertToModel(to));
         to.setId(restaurant.getId());
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(OPEN_REST_URL + "/{id}")
@@ -60,7 +60,7 @@ public class AdminRestaurantController {
         log.info("Update restaurant id: {}", id);
         assureIdConsistent(to, id);
         repository.findExist(id);
-        repository.save(RestaurantUtil.convert(to));
+        repository.save(RestaurantUtil.convertToModel(to));
     }
 
     @DeleteMapping("/{id}")

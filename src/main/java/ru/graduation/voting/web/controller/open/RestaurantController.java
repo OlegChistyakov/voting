@@ -39,7 +39,7 @@ public class RestaurantController {
     public RestaurantTo getById(@PathVariable Integer restId) {
         log.info("Get restaurant by id: {}", restId);
         Restaurant found = repository.findById(restId).orElseThrow(() -> new NotFoundException(EXCEPTION_NOT_EXIST_ENTITY));
-        return RestaurantUtil.convert(found);
+        return RestaurantUtil.convertToDTO(found);
     }
 
     @GetMapping("/{restId}/dish/{dishId}")
@@ -68,7 +68,7 @@ public class RestaurantController {
     public List<RestaurantTo> getAll() {
         log.info("Get all restaurants");
         return repository.findAll().stream()
-                .map(RestaurantUtil::convert)
+                .map(RestaurantUtil::convertToDTO)
                 .collect(Collectors.toList());
     }
 
