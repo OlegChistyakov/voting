@@ -2,7 +2,6 @@ package ru.graduation.voting.to;
 
 import lombok.EqualsAndHashCode;
 import lombok.Value;
-import ru.graduation.voting.model.Restaurant;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -18,13 +17,5 @@ public class RestaurantTo extends NamedTo {
     public RestaurantTo(Integer id, String name, String address) {
         super(id, name);
         this.address = address;
-    }
-
-    public static RestaurantTo convert(Restaurant restaurant) {
-        return new RestaurantTo(restaurant.getId(), restaurant.getName(), restaurant.getAddress());
-    }
-
-    public static Restaurant convert(RestaurantTo to) {
-        return new Restaurant(to.getId(), to.getName(), to.getAddress(), null);
     }
 }

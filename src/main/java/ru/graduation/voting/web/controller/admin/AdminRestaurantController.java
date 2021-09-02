@@ -13,6 +13,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.graduation.voting.model.Restaurant;
 import ru.graduation.voting.repository.RestaurantRepository;
 import ru.graduation.voting.to.RestaurantTo;
+import ru.graduation.voting.util.RestaurantUtil;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -43,7 +44,7 @@ public class AdminRestaurantController {
     public ResponseEntity<RestaurantTo> createWithLocation(@Valid @RequestBody RestaurantTo to) {
         log.info("Create restaurant by name: {}", to.getName());
         checkNew(to);
-        Restaurant restaurant = repository.save(RestaurantTo.convert(to));
+        Restaurant restaurant = repository.save(RestaurantUtil.convert(to));
         to.setId(restaurant.getId());
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(OPEN_REST_URL + "/{id}")
@@ -59,7 +60,7 @@ public class AdminRestaurantController {
         log.info("Update restaurant id: {}", id);
         assureIdConsistent(to, id);
         repository.findExist(id);
-        repository.save(RestaurantTo.convert(to));
+        repository.save(RestaurantUtil.convert(to));
     }
 
     @DeleteMapping("/{id}")

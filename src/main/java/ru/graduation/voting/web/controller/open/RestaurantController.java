@@ -13,6 +13,7 @@ import ru.graduation.voting.error.NotFoundException;
 import ru.graduation.voting.model.Restaurant;
 import ru.graduation.voting.repository.RestaurantRepository;
 import ru.graduation.voting.to.RestaurantTo;
+import ru.graduation.voting.util.RestaurantUtil;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -38,7 +39,7 @@ public class RestaurantController {
     public RestaurantTo getById(@PathVariable Integer restId) {
         log.info("Get restaurant by id: {}", restId);
         Restaurant found = repository.findById(restId).orElseThrow(() -> new NotFoundException(EXCEPTION_NOT_EXIST_ENTITY));
-        return RestaurantTo.convert(found);
+        return RestaurantUtil.convert(found);
     }
 
     @GetMapping("/{restId}/dish/{dishId}")
@@ -67,7 +68,7 @@ public class RestaurantController {
     public List<RestaurantTo> getAll() {
         log.info("Get all restaurants");
         return repository.findAll().stream()
-                .map(RestaurantTo::convert)
+                .map(RestaurantUtil::convert)
                 .collect(Collectors.toList());
     }
 

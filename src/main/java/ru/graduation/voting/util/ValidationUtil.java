@@ -1,9 +1,11 @@
 package ru.graduation.voting.util;
 
+import lombok.experimental.UtilityClass;
 import ru.graduation.voting.HasId;
 import ru.graduation.voting.error.IllegalRequestDataException;
 import ru.graduation.voting.error.NotFoundException;
 
+@UtilityClass
 public class ValidationUtil {
     public static void checkNew(HasId bean) {
         if (!bean.isNew()) {

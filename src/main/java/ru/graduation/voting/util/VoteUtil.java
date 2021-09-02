@@ -1,19 +1,16 @@
 package ru.graduation.voting.util;
 
+import lombok.experimental.UtilityClass;
 import ru.graduation.voting.model.Vote;
-import ru.graduation.voting.to.RestaurantTo;
 import ru.graduation.voting.to.VoteTo;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@UtilityClass
 public class VoteUtil {
-
-    private VoteUtil() {
-    }
-
     public static VoteTo convert(Vote vote) {
-        return new VoteTo(vote.getId(), vote.getLocalDate(), RestaurantTo.convert(vote.getRestaurant()));
+        return new VoteTo(vote.getId(), vote.getLocalDate(), RestaurantUtil.convert(vote.getRestaurant()));
     }
 
     public static List<VoteTo> convertList(List<Vote> votes) {

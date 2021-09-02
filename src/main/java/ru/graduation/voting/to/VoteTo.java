@@ -19,9 +19,4 @@ public class VoteTo extends BaseEntity {
         this.localDate = localDate;
         this.restaurant = restaurant;
     }
-
-    public VoteTo(LocalDate localDate, RestaurantTo restaurant) {
-        this.localDate = localDate;
-        this.restaurant = restaurant;
-    }
 }
