@@ -2,6 +2,7 @@ package ru.graduation.voting.web.controller.account;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -55,6 +56,7 @@ public class AccountVoteController {
 
     @PostMapping(value = "/{restId}")
     @Transactional
+    @CacheEvict(value = "votes", allEntries = true)
     public ResponseEntity<VoteTo> toVote(@AuthenticationPrincipal AuthUser authUser,
                                          @PathVariable int restId) {
         log.info("Vote for restaurant by id: {}", restId);

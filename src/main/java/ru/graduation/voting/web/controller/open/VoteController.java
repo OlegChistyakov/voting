@@ -2,6 +2,7 @@ package ru.graduation.voting.web.controller.open;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.lang.Nullable;
@@ -30,18 +31,19 @@ public class VoteController {
     private final VoteRepository repository;
 
     @GetMapping
-    List<VoteTo> getAll() {
+    public List<VoteTo> getAll() {
         return VoteUtil.convertToListDTO(repository.findAll());
     }
 
     @GetMapping("/today")
-    List<VoteTo> getAllToday() {
+    @Cacheable("votes")
+    public List<VoteTo> getAllToday() {
         return VoteUtil.convertToListDTO(repository.getAllByBetweenDate(LocalDate.now(), LocalDate.now()));
     }
 
     @GetMapping("/by")
-    List<VoteTo> getAllBetweenDate(@RequestParam @Nullable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
-                                   @RequestParam @Nullable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
+    public List<VoteTo> getAllBetweenDate(@RequestParam @Nullable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+                                          @RequestParam @Nullable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
         return VoteUtil.convertToListDTO(repository.getAllByBetweenDate(startDayOrMin(startDate), endDayOrMax(endDate)));
     }
 }
