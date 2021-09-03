@@ -23,4 +23,11 @@ public class DishTo extends BaseTo {
 
     @NotNull
     LocalDate date;
+
+    public DishTo(Integer id, String description, int price, LocalDate date) {
+        super(id);
+        this.description = description;
+        this.price = price;
+        this.date = date;
+    }
 }

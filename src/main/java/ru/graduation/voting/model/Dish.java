@@ -29,7 +29,6 @@ public class Dish extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rest_id")
     @JsonBackReference
-    @Schema(hidden = true)
     private Restaurant restaurant;
 
     public Dish(Integer id, String description, int price, LocalDate date, Restaurant restaurant) {

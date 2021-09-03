@@ -46,7 +46,7 @@ public class AdminDishController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @CacheEvict(allEntries = true)
-    public ResponseEntity<Dish> createWithLocation(@Valid @RequestBody DishTo to, @PathVariable int id) {
+    public ResponseEntity<DishTo> createWithLocation(@Valid @RequestBody DishTo to, @PathVariable int id) {
         log.info("Create dish for restaurant id: {}", id);
         checkNew(to);
 
@@ -56,7 +56,7 @@ public class AdminDishController {
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(OPEN_REST_URL + "/{restId}/dish/{dishId}")
                 .buildAndExpand(foundRest.getId(), dish.getId()).toUri();
-        return ResponseEntity.created(uriOfNewResource).body(dish);
+        return ResponseEntity.created(uriOfNewResource).body(DishUtil.convertToDTO(dish));
     }
 
     @PutMapping(value = "/{dishId}", consumes = MediaType.APPLICATION_JSON_VALUE)
