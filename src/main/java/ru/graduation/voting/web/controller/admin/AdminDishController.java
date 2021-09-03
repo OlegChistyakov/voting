@@ -7,6 +7,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.graduation.voting.error.NotFoundException;
@@ -36,6 +37,12 @@ public class AdminDishController {
     public static final String ADMIN_DISH_URL = "/api/v1/admin/restaurants/{id}/dish";
     private final RestaurantRepository restaurantRepository;
     private final DishRepository dishRepository;
+    private final UniqueDishNameValidator dishNameValidator;
+
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) {
+        binder.addValidators(dishNameValidator);
+    }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @CacheEvict(allEntries = true)

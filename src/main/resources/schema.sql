@@ -36,6 +36,8 @@ CREATE TABLE dishes
     FOREIGN KEY (rest_id) REFERENCES restaurants (id) ON DELETE CASCADE
 );
 
+CREATE UNIQUE INDEX dishes_unique_rest_date_description_idx ON dishes (rest_id, date, description);
+
 CREATE TABLE votes
 (
     id      INTEGER DEFAULT global_seq.nextval PRIMARY KEY,

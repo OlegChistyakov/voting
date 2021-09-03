@@ -13,7 +13,8 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "dishes")
+@Table(name = "dishes", uniqueConstraints =
+        {@UniqueConstraint(columnNames = {"rest_id", "date", "description"}, name = "dishes_unique_rest_date_description_idx")})
 public class Dish extends BaseEntity {
 
     @Column(name = "description")
