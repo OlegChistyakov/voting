@@ -19,6 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.graduation.voting.util.JsonUtil.writeValue;
+import static ru.graduation.voting.web.GlobalExceptionHandler.EXCEPTION_DUPLICATE_DISH_NAME;
 import static ru.graduation.voting.web.GlobalExceptionHandler.EXCEPTION_NOT_EXIST_ENTITY;
 import static ru.graduation.voting.web.controller.UserTestData.ADMIN_MAIL;
 import static ru.graduation.voting.web.controller.admin.AdminTestData.*;
@@ -59,6 +60,19 @@ class AdminDishControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    @WithUserDetails(value = ADMIN_MAIL)
+    void createDuplicateName() throws Exception {
+        Dish dish = getNewDish();
+        dish.setDescription("today's dish_1 from rest_1");
+        perform(MockMvcRequestBuilders.post(DISH_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(writeValue(dish)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(content().string(containsString(EXCEPTION_DUPLICATE_DISH_NAME)));
+    }
+
+    @Test
     @WithUserDetails(ADMIN_MAIL)
     void update() throws Exception {
         Dish updated = getUpdateDish();
@@ -70,6 +84,19 @@ class AdminDishControllerTest extends AbstractControllerTest {
                 .andExpect(status().isNoContent());
 
         DISH_MATCHER.assertMatch(repository.getById(EXIST_DISH_ID), getUpdateDish());
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_MAIL)
+    void updateDuplicateName() throws Exception {
+        Dish updated = getUpdateDish();
+        updated.setDescription("today's dish_2 from rest_1");
+        perform(MockMvcRequestBuilders.post(DISH_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(writeValue(updated)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(content().string(containsString(EXCEPTION_DUPLICATE_DISH_NAME)));
     }
 
     @Test
