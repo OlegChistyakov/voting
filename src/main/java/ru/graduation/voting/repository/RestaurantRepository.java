@@ -14,10 +14,6 @@ public interface RestaurantRepository extends BaseRepository<Restaurant> {
 
     Optional<Restaurant> getByNameIgnoreCase(String name);
 
-    @Query("SELECT r FROM Restaurant r WHERE r.id=?1")
-    @EntityGraph(attributePaths = {"menu"}, type = EntityGraph.EntityGraphType.LOAD)
-    Optional<Restaurant> getWithMenu(Integer restId);
-
     @Query("SELECT r FROM Restaurant r JOIN FETCH r.menu m WHERE r.id=?1 AND m.id=?2")
     @EntityGraph(attributePaths = {"menu"}, type = EntityGraph.EntityGraphType.LOAD)
     Optional<Restaurant> getWithDish(Integer restId, Integer dishId);

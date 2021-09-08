@@ -31,15 +31,6 @@ class RestaurantControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    void getByIdWithMenu() throws Exception {
-        rest1.setMenu(getMenu(REST1_ID));
-        perform(MockMvcRequestBuilders.get(REST_URL + REST1_ID + "/with-menu"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(RESTAURANT_MATCHER.contentJson(rest1));
-    }
-
-    @Test
     void getByIdWithMenuBetweenDate() throws Exception {
         rest1.setMenu(getMenu(REST1_ID));
         perform(MockMvcRequestBuilders

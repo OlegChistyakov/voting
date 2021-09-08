@@ -8,6 +8,7 @@ import java.time.LocalTime;
 @UtilityClass
 public class DateUtil {
 
+    public static final String PATTERN = "yyyy-MM-dd";
     private static final LocalDate MIN_DATE = LocalDate.of(1, 1, 1);
     private static final LocalDate MAX_DATE = LocalDate.of(3000, 1, 1);
     public static final LocalTime END_TIME_VOTE = LocalTime.of(11, 0);
