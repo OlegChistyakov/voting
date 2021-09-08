@@ -27,7 +27,7 @@
 * Lombok
 * JUnit
 -----------------------------
-## Some curl requests
+## Some curl requests:
 
 #### get all restaurants (without menu)
 `curl -s http://localhost:8080/api/v1/restaurants`
@@ -39,4 +39,13 @@
 
 ## Link to swagger:
 
-#### http://localhost:8080/swagger-ui.html
+#### `http://localhost:8080/swagger-ui.html`
+
+-----------------------------
+
+## Pre-installed users:
+| User          | Email              | Password |
+| ------------- |:------------------:| -------: |
+| User 1        | user@gmail.com     | password |
+| User 2        | user@yandex.ru     | password |
+| Admin         | admin@gmail.com    | admin    |
