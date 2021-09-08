@@ -10,9 +10,9 @@ import ru.graduation.voting.HasId;
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Data
-public abstract class BaseTo implements HasId {
+public class BaseTo implements HasId {
 
-    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
+    @Schema(accessMode = Schema.AccessMode.AUTO)
     protected Integer id;
 
     @Override

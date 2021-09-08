@@ -13,13 +13,14 @@ import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static ru.graduation.voting.util.JsonUtil.writeValue;
 import static ru.graduation.voting.web.GlobalExceptionHandler.EXCEPTION_VOTE_CLOSE;
 import static ru.graduation.voting.web.controller.UserTestData.*;
 import static ru.graduation.voting.web.controller.account.AccountData.MATCHER;
 import static ru.graduation.voting.web.controller.account.AccountData.getFirstVote;
 import static ru.graduation.voting.web.controller.account.AccountVoteController.VOTE_URL;
-import static ru.graduation.voting.web.controller.open.OpenTestData.REST1_ID;
 import static ru.graduation.voting.web.controller.open.OpenTestData.REST2_ID;
+import static ru.graduation.voting.web.controller.open.OpenTestData.rest1;
 
 @SpringBootTest(classes = ClockDisableVote.class)
 public class AfterVoteCloseControllerTest extends AbstractVoteControllerTest {
@@ -28,12 +29,15 @@ public class AfterVoteCloseControllerTest extends AbstractVoteControllerTest {
 
     @Test
     @WithUserDetails(USER_MAIL1)
-    void firstVote() throws Exception {
+    void createVote() throws Exception {
         Vote firstVote = getFirstVote();
-        ResultActions action = perform(MockMvcRequestBuilders.post(URL + REST1_ID))
+        ResultActions action = perform(MockMvcRequestBuilders.post(URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(writeValue(rest1)))
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(MATCHER.contentJson(firstVote));
+                .andExpect(MATCHER.contentJson(firstVote))
+                .andExpect(status().isCreated());
 
         Vote created = MATCHER.readFromJson(action);
         int newId = created.id();
@@ -44,10 +48,12 @@ public class AfterVoteCloseControllerTest extends AbstractVoteControllerTest {
 
     @Test
     @WithUserDetails(USER_MAIL2)
-    void alreadyVote() throws Exception {
-        perform(MockMvcRequestBuilders.post(URL + REST2_ID))
+    void updateVote() throws Exception {
+        perform(MockMvcRequestBuilders.put(URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(writeValue(rest1)))
                 .andDo(print())
-                .andExpect(status().isMethodNotAllowed())
+                .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string(containsString(EXCEPTION_VOTE_CLOSE)));
     }
 }

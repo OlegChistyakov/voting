@@ -27,7 +27,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     public static final String EXCEPTION_RESTAURANT_DUPLICATE_NAME = "Restaurant with name already exists";
     public static final String EXCEPTION_NOT_EXIST_ENTITY = "The entity not exists";
-    public static final String EXCEPTION_VOTE_CLOSE = "You voted today and voting is closed";
+    public static final String EXCEPTION_VOTE_CLOSE = "Voting is closed";
+    public static final String EXCEPTION_REPEAT_POST_REQUEST = "Repeated request to create a voice";
     public static final String EXCEPTION_REPEAT_REQUEST = "You have already voted for this restaurant";
     public static final String EXCEPTION_DUPLICATE_EMAIL = "User with this email already exists";
     public static final String EXCEPTION_DUPLICATE_DISH_NAME = "There is already food with the same description in the restaurant on the specified date.";

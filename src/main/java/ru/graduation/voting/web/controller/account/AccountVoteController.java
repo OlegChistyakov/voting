@@ -2,19 +2,19 @@ package ru.graduation.voting.web.controller.account;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import ru.graduation.voting.error.NotFoundException;
 import ru.graduation.voting.error.RequestNotBeExecutedException;
 import ru.graduation.voting.model.Restaurant;
-import ru.graduation.voting.model.User;
 import ru.graduation.voting.model.Vote;
 import ru.graduation.voting.repository.RestaurantRepository;
 import ru.graduation.voting.repository.VoteRepository;
+import ru.graduation.voting.to.BaseTo;
 import ru.graduation.voting.to.VoteTo;
 import ru.graduation.voting.util.VoteUtil;
 import ru.graduation.voting.web.AuthUser;
@@ -26,9 +26,9 @@ import java.util.List;
 import java.util.Optional;
 
 import static ru.graduation.voting.util.ControllerUtil.formResponse;
+import static ru.graduation.voting.util.ControllerUtil.unpack;
 import static ru.graduation.voting.util.DateUtil.END_TIME_VOTE;
-import static ru.graduation.voting.web.GlobalExceptionHandler.EXCEPTION_REPEAT_REQUEST;
-import static ru.graduation.voting.web.GlobalExceptionHandler.EXCEPTION_VOTE_CLOSE;
+import static ru.graduation.voting.web.GlobalExceptionHandler.*;
 import static ru.graduation.voting.web.controller.account.AccountVoteController.VOTE_URL;
 
 @RestController
@@ -55,33 +55,40 @@ public class AccountVoteController {
         return formResponse(optional, VoteTo.class, VoteUtil::convertToDTO);
     }
 
-    @PostMapping(value = "/{restId}")
+    @PostMapping
     @Transactional
-    @CacheEvict(value = "votes", allEntries = true)
-    public ResponseEntity<VoteTo> toVote(@AuthenticationPrincipal AuthUser authUser,
-                                         @PathVariable int restId) {
-        log.info("Vote for restaurant by id: {}", restId);
+    public ResponseEntity<VoteTo> createVote(@AuthenticationPrincipal AuthUser authUser, @RequestBody BaseTo to) {
+        int restId = getId(to);
+        log.info("Create vote for restaurant by id: {}", restId);
 
         Restaurant foundRestaurant = restaurantRepository.findExist(restId);
         Vote foundVote = voteRepository.findByUserIdToday(authUser.id()).orElse(null);
-
-        boolean isVotingActive = LocalTime.now(clock).isBefore(END_TIME_VOTE);
         boolean alreadyVoted = foundVote != null;
 
-        if (isVotingActive) {
-            if (alreadyVoted) {
-                checkRepeatVoice(restId, foundVote.getRestaurant());
-                foundVote.setRestaurant(foundRestaurant);
-                return new ResponseEntity<>(VoteUtil.convertToDTO(voteRepository.save(foundVote)), HttpStatus.OK);
-            } else {
-                return create(authUser.getUser(), foundRestaurant);
-            }
+        if (alreadyVoted) {
+            throw new NotFoundException(EXCEPTION_REPEAT_POST_REQUEST);
         } else {
-            if (alreadyVoted) {
-                throw new RequestNotBeExecutedException(EXCEPTION_VOTE_CLOSE);
-            } else {
-                return create(authUser.getUser(), foundRestaurant);
-            }
+            Vote vote = voteRepository.save(new Vote(LocalDate.now(), authUser.getUser(), foundRestaurant));
+            return new ResponseEntity<>(VoteUtil.convertToDTO(vote), HttpStatus.CREATED);
+        }
+    }
+
+    @PutMapping
+    @Transactional
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateVote(@AuthenticationPrincipal AuthUser authUser, @RequestBody BaseTo to) {
+        int restId = getId(to);
+        log.info("Update vote for restaurant by id: {}", restId);
+
+        Restaurant foundRestaurant = restaurantRepository.findExist(restId);
+        Vote foundVote = unpack(voteRepository.findByUserIdToday(authUser.id()));
+        boolean isVotingActive = LocalTime.now(clock).isBefore(END_TIME_VOTE);
+
+        if (isVotingActive) {
+            checkRepeatVoice(restId, foundVote.getRestaurant());
+            foundVote.setRestaurant(foundRestaurant);
+        } else {
+            throw new RequestNotBeExecutedException(EXCEPTION_VOTE_CLOSE);
         }
     }
 
@@ -91,8 +98,10 @@ public class AccountVoteController {
         }
     }
 
-    private ResponseEntity<VoteTo> create(User user, Restaurant restaurant) {
-        Vote vote = voteRepository.save(new Vote(LocalDate.now(), user, restaurant));
-        return new ResponseEntity<>(VoteUtil.convertToDTO(vote), HttpStatus.OK);
+    private int getId(BaseTo to) {
+        if (to.getId() == null) {
+            throw new NotFoundException(EXCEPTION_NOT_EXIST_ENTITY);
+        }
+        return to.id();
     }
 }

@@ -6,6 +6,7 @@ import ru.graduation.voting.model.Vote;
 import java.time.LocalDate;
 import java.util.List;
 
+import static ru.graduation.voting.web.controller.UserTestData.user2;
 import static ru.graduation.voting.web.controller.open.OpenTestData.rest1;
 import static ru.graduation.voting.web.controller.open.OpenTestData.rest2;
 
@@ -19,7 +20,7 @@ public class AccountData {
     public static final List<Vote> votesUser1 =List.of(vote1, vote2);
 
     public static Vote getReVoting() {
-        return new Vote(100_017, LocalDate.now(), null, rest2);
+        return new Vote(100_017, LocalDate.now(), user2, rest2);
     }
     public static Vote getFirstVote() {
         return new Vote(100_019, LocalDate.now(), null, rest1);

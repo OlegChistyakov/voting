@@ -4,7 +4,6 @@ import lombok.experimental.UtilityClass;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import ru.graduation.voting.error.NotFoundException;
-import ru.graduation.voting.to.BaseTo;
 
 import java.util.Optional;
 import java.util.function.Function;
