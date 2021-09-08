@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import ru.graduation.voting.error.NotFoundException;
 import ru.graduation.voting.error.RequestNotBeExecutedException;
 import ru.graduation.voting.model.Restaurant;
 import ru.graduation.voting.model.User;
@@ -24,9 +23,12 @@ import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
+import static ru.graduation.voting.util.ControllerUtil.formResponse;
 import static ru.graduation.voting.util.DateUtil.END_TIME_VOTE;
-import static ru.graduation.voting.web.GlobalExceptionHandler.*;
+import static ru.graduation.voting.web.GlobalExceptionHandler.EXCEPTION_REPEAT_REQUEST;
+import static ru.graduation.voting.web.GlobalExceptionHandler.EXCEPTION_VOTE_CLOSE;
 import static ru.graduation.voting.web.controller.account.AccountVoteController.VOTE_URL;
 
 @RestController
@@ -35,10 +37,10 @@ import static ru.graduation.voting.web.controller.account.AccountVoteController.
 @RequestMapping(value = VOTE_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class AccountVoteController {
 
-    public static final String VOTE_URL = "/api/v1/account/vote";
+    public static final String VOTE_URL = "/api/v1/account/votes";
     private final VoteRepository voteRepository;
     private final RestaurantRepository restaurantRepository;
-    private Clock clock;
+    private final Clock clock;
 
     @GetMapping
     public List<VoteTo> getAll(@AuthenticationPrincipal AuthUser authUser) {
@@ -47,11 +49,10 @@ public class AccountVoteController {
     }
 
     @GetMapping("/{id}")
-    public VoteTo get(@AuthenticationPrincipal AuthUser authUser, @PathVariable int id) {
+    public ResponseEntity<VoteTo> get(@AuthenticationPrincipal AuthUser authUser, @PathVariable int id) {
         log.info("Get vote by id: {} for user: {}", id, authUser.id());
-        Vote found = voteRepository.findByIdAndUserId(id, authUser.id())
-                .orElseThrow(() -> new NotFoundException(EXCEPTION_NOT_EXIST_ENTITY));
-        return VoteUtil.convertToDTO(found);
+        Optional<Vote> optional = voteRepository.findByIdAndUserId(id, authUser.id());
+        return formResponse(optional, VoteTo.class, VoteUtil::convertToDTO);
     }
 
     @PostMapping(value = "/{restId}")
