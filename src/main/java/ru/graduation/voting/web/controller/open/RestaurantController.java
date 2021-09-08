@@ -10,9 +10,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 import ru.graduation.voting.error.NotFoundException;
+import ru.graduation.voting.model.Dish;
 import ru.graduation.voting.model.Restaurant;
 import ru.graduation.voting.repository.RestaurantRepository;
+import ru.graduation.voting.to.DishTo;
 import ru.graduation.voting.to.RestaurantTo;
+import ru.graduation.voting.util.DishUtil;
 import ru.graduation.voting.util.RestaurantUtil;
 
 import java.time.LocalDate;
@@ -43,9 +46,13 @@ public class RestaurantController {
     }
 
     @GetMapping("/{restId}/dish/{dishId}")
-    public ResponseEntity<Restaurant> getWithDish(@PathVariable int restId, @PathVariable int dishId) {
+    public ResponseEntity<DishTo> getWithDish(@PathVariable int restId, @PathVariable int dishId) {
         log.info("Get restaurant by id: {} with dish id: {}", restId, dishId);
-        return response(() -> repository.getWithDish(restId, dishId));
+        Dish dish = repository
+                .getWithDish(restId, dishId)
+                .orElseThrow(() -> new NotFoundException(EXCEPTION_NOT_EXIST_ENTITY))
+                .getMenu().get(0);
+        return new ResponseEntity<>(DishUtil.convertToDTO(dish), HttpStatus.OK);
     }
 
     @GetMapping("/{restId}/with-menu")
