@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.graduation.voting.error.NotFoundException;
 import ru.graduation.voting.error.RequestNotBeExecutedException;
 import ru.graduation.voting.model.Restaurant;
@@ -19,6 +20,7 @@ import ru.graduation.voting.to.VoteTo;
 import ru.graduation.voting.util.VoteUtil;
 import ru.graduation.voting.web.AuthUser;
 
+import java.net.URI;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -76,7 +78,9 @@ public class AccountVoteController {
             throw new NotFoundException(EXCEPTION_REPEAT_POST_REQUEST);
         } else {
             Vote vote = voteRepository.save(new Vote(LocalDate.now(), authUser.getUser(), foundRestaurant));
-            return new ResponseEntity<>(VoteUtil.convertToDTO(vote), HttpStatus.CREATED);
+            URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path(VOTE_URL + "/" + vote.id()).build().toUri();
+            return ResponseEntity.created(uriOfNewResource).body(VoteUtil.convertToDTO(vote));
         }
     }
 
