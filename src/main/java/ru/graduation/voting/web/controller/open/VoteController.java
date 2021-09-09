@@ -2,7 +2,6 @@ package ru.graduation.voting.web.controller.open;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.lang.Nullable;
@@ -30,13 +29,7 @@ public class VoteController {
     public static final String OPEN_VOTE_URL = "/api/v1/votes";
     private final VoteRepository repository;
 
-    @GetMapping
-    public List<VoteTo> getAll() {
-        return VoteUtil.convertToListDTO(repository.findAll());
-    }
-
     @GetMapping("/today")
-    @Cacheable("votes")
     public List<VoteTo> getAllToday() {
         return VoteUtil.convertToListDTO(repository.getAllByBetweenDate(LocalDate.now(), LocalDate.now()));
     }
