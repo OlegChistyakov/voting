@@ -25,7 +25,7 @@ import static ru.graduation.voting.util.ValidationUtil.assureIdConsistent;
 import static ru.graduation.voting.util.ValidationUtil.checkNew;
 import static ru.graduation.voting.web.GlobalExceptionHandler.EXCEPTION_NOT_EXIST_ENTITY;
 import static ru.graduation.voting.web.controller.admin.AdminDishController.ADMIN_DISH_URL;
-import static ru.graduation.voting.web.controller.open.RestaurantController.OPEN_REST_URL;
+import static ru.graduation.voting.web.controller.open.DishController.OPEN_DISH_URL;
 
 @RestController
 @Slf4j
@@ -54,7 +54,7 @@ public class AdminDishController {
         Dish dish = DishUtil.convertToModel(to, foundRest);
         dish = dishRepository.save(dish);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(OPEN_REST_URL + "/{restId}/dishes/{dishId}")
+                .path(OPEN_DISH_URL + "/{dishId}")
                 .buildAndExpand(foundRest.getId(), dish.getId()).toUri();
         return ResponseEntity.created(uriOfNewResource).body(DishUtil.convertToDTO(dish));
     }
@@ -67,7 +67,7 @@ public class AdminDishController {
         assureIdConsistent(to, dishId);
 
         Dish saveDish = dishRepository
-                .findByIdWithRestaurant(dishId, id)
+                .findByIdAndRestaurantIdWithRestaurant(dishId, id)
                 .orElseThrow(() -> new NotFoundException(EXCEPTION_NOT_EXIST_ENTITY));
         Dish updateDish = DishUtil.convertToModel(to, saveDish.getRestaurant());
         dishRepository.save(updateDish);

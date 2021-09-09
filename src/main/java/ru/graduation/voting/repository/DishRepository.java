@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 import ru.graduation.voting.model.Dish;
 
+import java.util.List;
 import java.util.Optional;
 
 import static ru.graduation.voting.util.ValidationUtil.checkModification;
@@ -13,9 +14,11 @@ import static ru.graduation.voting.util.ValidationUtil.checkModification;
 @Transactional(readOnly = true)
 public interface DishRepository extends BaseRepository<Dish> {
 
+    List<Dish> findByDescriptionIgnoreCase(String description);
+
     @Query("SELECT d FROM Dish d JOIN FETCH d.restaurant r WHERE d.id=?1 AND r.id=?2")
     @EntityGraph(attributePaths = {"restaurant"}, type = EntityGraph.EntityGraphType.LOAD)
-    Optional<Dish> findByIdWithRestaurant(int id, int restId);
+    Optional<Dish> findByIdAndRestaurantIdWithRestaurant(int id, int restId);
 
     @Modifying
     @Transactional
