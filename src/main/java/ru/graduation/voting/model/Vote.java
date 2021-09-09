@@ -20,17 +20,17 @@ import java.time.LocalDate;
         {@UniqueConstraint(columnNames = {"user_id", "local_date"}, name = "votes_unique_date_user_idx")})
 public class Vote extends BaseEntity {
 
-    @Column(name = "local_date")
+    @Column(name = "local_date", nullable = false)
     private LocalDate localDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
     @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "rest_id")
+    @JoinColumn(name = "rest_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Restaurant restaurant;
 

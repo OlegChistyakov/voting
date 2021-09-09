@@ -1,13 +1,12 @@
 package ru.graduation.voting.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 
 @Entity
@@ -18,17 +17,22 @@ import java.time.LocalDate;
         {@UniqueConstraint(columnNames = {"rest_id", "local_date", "description"}, name = "dishes_unique_rest_date_description_idx")})
 public class Dish extends BaseEntity {
 
-    @Column(name = "description")
+    @NotBlank
+    @Size(min = 2, max = 100)
+    @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name = "price")
+    @NotNull
+    @Min(10)
+    @Max(5000)
+    @Column(name = "price", nullable = false)
     private int price;
 
-    @Column(name = "local_date")
+    @Column(name = "local_date", nullable = false)
     private LocalDate date;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "rest_id")
+    @JoinColumn(name = "rest_id", nullable = false)
     @JsonIgnore
     private Restaurant restaurant;
 

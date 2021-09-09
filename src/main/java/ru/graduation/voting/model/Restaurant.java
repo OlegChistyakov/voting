@@ -18,9 +18,9 @@ import java.util.List;
 @Table(name = "restaurants")
 public class Restaurant extends NamedEntity {
 
-    @Column(name = "address")
     @NotBlank
     @Size(min = 5, max = 100)
+    @Column(name = "address", nullable = false)
     private String address;
 
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
