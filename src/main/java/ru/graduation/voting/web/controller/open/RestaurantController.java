@@ -42,7 +42,7 @@ public class RestaurantController {
         return RestaurantUtil.convertToDTO(found);
     }
 
-    @GetMapping("/{restId}/dish/{dishId}")
+    @GetMapping("/{restId}/dishes/{dishId}")
     public ResponseEntity<DishTo> getWithDish(@PathVariable int restId, @PathVariable int dishId) {
         log.info("Get restaurant by id: {} with dish id: {}", restId, dishId);
         Dish found = unpack(repository.getWithDish(restId, dishId)).getMenu().get(0);

@@ -34,7 +34,7 @@ import static ru.graduation.voting.web.controller.open.RestaurantController.OPEN
 @RequestMapping(value = ADMIN_DISH_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class AdminDishController {
 
-    public static final String ADMIN_DISH_URL = "/api/v1/admin/restaurants/{id}/dish";
+    public static final String ADMIN_DISH_URL = "/api/v1/admin/restaurants/{id}/dishes";
     private final RestaurantRepository restaurantRepository;
     private final DishRepository dishRepository;
     private final UniqueDishNameValidator dishNameValidator;
@@ -54,7 +54,7 @@ public class AdminDishController {
         Dish dish = DishUtil.convertToModel(to, foundRest);
         dish = dishRepository.save(dish);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(OPEN_REST_URL + "/{restId}/dish/{dishId}")
+                .path(OPEN_REST_URL + "/{restId}/dishes/{dishId}")
                 .buildAndExpand(foundRest.getId(), dish.getId()).toUri();
         return ResponseEntity.created(uriOfNewResource).body(DishUtil.convertToDTO(dish));
     }
