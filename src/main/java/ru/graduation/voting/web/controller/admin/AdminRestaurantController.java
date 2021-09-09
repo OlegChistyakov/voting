@@ -40,7 +40,6 @@ public class AdminRestaurantController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    @CacheEvict(allEntries = true)
     public ResponseEntity<RestaurantTo> createWithLocation(@Valid @RequestBody RestaurantTo to) {
         log.info("Create restaurant by name: {}", to.getName());
         checkNew(to);
