@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.graduation.voting.web.GlobalExceptionHandler.EXCEPTION_NOT_EXIST_ENTITY;
+import static ru.graduation.voting.web.controller.UserTestData.USER_MAIL2;
 import static ru.graduation.voting.web.controller.account.AccountData.*;
 import static ru.graduation.voting.web.controller.UserTestData.USER_MAIL1;
 
@@ -33,6 +34,16 @@ class AccountVoteControllerTest extends AbstractVoteControllerTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(MATCHER.contentJson(vote2));
+    }
+
+    @Test
+    @WithUserDetails(USER_MAIL2)
+    void getToday() throws Exception {
+        perform(MockMvcRequestBuilders.get(URL + "/today"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(MATCHER.contentJson(vote3));
     }
 
     @Test

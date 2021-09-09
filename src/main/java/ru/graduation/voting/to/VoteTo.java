@@ -1,6 +1,5 @@
 package ru.graduation.voting.to;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.Value;
@@ -13,7 +12,6 @@ import java.time.LocalDate;
 @ToString(callSuper = true)
 public class VoteTo extends BaseEntity {
     LocalDate localDate;
-    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     RestaurantTo restaurant;
 
     public VoteTo(Integer id, LocalDate localDate, RestaurantTo restaurant) {

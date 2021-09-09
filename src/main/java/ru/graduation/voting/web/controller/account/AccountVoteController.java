@@ -55,6 +55,13 @@ public class AccountVoteController {
         return formResponse(optional, VoteTo.class, VoteUtil::convertToDTO);
     }
 
+    @GetMapping("/today")
+    public ResponseEntity<VoteTo> getToday(@AuthenticationPrincipal AuthUser authUser) {
+        log.info("Get today vote for user: {}", authUser.id());
+        Optional<Vote> optional = voteRepository.findByUserIdAndLocalDate(authUser.id(), LocalDate.now());
+        return formResponse(optional, VoteTo.class, VoteUtil::convertToDTO);
+    }
+
     @PostMapping
     @Transactional
     public ResponseEntity<VoteTo> createVote(@AuthenticationPrincipal AuthUser authUser, @RequestBody BaseTo to) {
@@ -62,7 +69,7 @@ public class AccountVoteController {
         log.info("Create vote for restaurant by id: {}", restId);
 
         Restaurant foundRestaurant = restaurantRepository.findExist(restId);
-        Vote foundVote = voteRepository.findByUserIdToday(authUser.id()).orElse(null);
+        Vote foundVote = voteRepository.findByUserIdAndLocalDate(authUser.id(), LocalDate.now()).orElse(null);
         boolean alreadyVoted = foundVote != null;
 
         if (alreadyVoted) {
@@ -81,7 +88,7 @@ public class AccountVoteController {
         log.info("Update vote for restaurant by id: {}", restId);
 
         Restaurant foundRestaurant = restaurantRepository.findExist(restId);
-        Vote foundVote = unpack(voteRepository.findByUserIdToday(authUser.id()));
+        Vote foundVote = unpack(voteRepository.findByUserIdAndLocalDate(authUser.id(), LocalDate.now()));
         boolean isVotingActive = LocalTime.now(clock).isBefore(END_TIME_VOTE);
 
         if (isVotingActive) {
