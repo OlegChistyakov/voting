@@ -15,7 +15,7 @@ import ru.graduation.voting.model.Restaurant;
 import ru.graduation.voting.model.Vote;
 import ru.graduation.voting.repository.RestaurantRepository;
 import ru.graduation.voting.repository.VoteRepository;
-import ru.graduation.voting.to.BaseTo;
+import ru.graduation.voting.to.IntegerTo;
 import ru.graduation.voting.to.VoteTo;
 import ru.graduation.voting.util.VoteUtil;
 import ru.graduation.voting.web.AuthUser;
@@ -66,7 +66,7 @@ public class AccountVoteController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<VoteTo> createVote(@AuthenticationPrincipal AuthUser authUser, @RequestBody BaseTo to) {
+    public ResponseEntity<VoteTo> createVote(@AuthenticationPrincipal AuthUser authUser, @RequestBody IntegerTo to) {
         int restId = getId(to);
         log.info("Create vote for restaurant by id: {}", restId);
 
@@ -87,7 +87,7 @@ public class AccountVoteController {
     @PutMapping
     @Transactional
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateVote(@AuthenticationPrincipal AuthUser authUser, @RequestBody BaseTo to) {
+    public void updateVote(@AuthenticationPrincipal AuthUser authUser, @RequestBody IntegerTo to) {
         int restId = getId(to);
         log.info("Update vote for restaurant by id: {}", restId);
 
@@ -109,10 +109,10 @@ public class AccountVoteController {
         }
     }
 
-    private int getId(BaseTo to) {
+    private int getId(IntegerTo to) {
         if (to.getId() == null) {
             throw new NotFoundException(EXCEPTION_NOT_EXIST_ENTITY);
         }
-        return to.id();
+        return to.getId();
     }
 }
