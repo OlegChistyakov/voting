@@ -14,7 +14,7 @@ import static ru.graduation.voting.web.controller.UserTestData.USER_MAIL2;
 import static ru.graduation.voting.web.controller.account.AccountData.*;
 import static ru.graduation.voting.web.controller.UserTestData.USER_MAIL1;
 
-class AccountVoteControllerTest extends AbstractVoteControllerTest {
+class AccountAdminVoteControllerTest extends AbstractVoteControllerTest {
 
     @Test
     @WithUserDetails(USER_MAIL1)

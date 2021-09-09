@@ -3,14 +3,13 @@ package ru.graduation.voting.to;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.Value;
-import ru.graduation.voting.model.BaseEntity;
 
 import java.time.LocalDate;
 
 @Value
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class VoteTo extends BaseEntity {
+public class VoteTo extends BaseTo {
     LocalDate localDate;
     RestaurantTo restaurant;
 

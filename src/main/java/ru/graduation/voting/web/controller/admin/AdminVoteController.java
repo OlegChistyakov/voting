@@ -1,4 +1,4 @@
-package ru.graduation.voting.web.controller.open;
+package ru.graduation.voting.web.controller.admin;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,15 +18,15 @@ import java.util.List;
 
 import static ru.graduation.voting.util.DateUtil.endDayOrMax;
 import static ru.graduation.voting.util.DateUtil.startDayOrMin;
-import static ru.graduation.voting.web.controller.open.VoteController.OPEN_VOTE_URL;
+import static ru.graduation.voting.web.controller.admin.AdminVoteController.ADMIN_VOTE_URL;
 
 @RestController
 @Slf4j
 @AllArgsConstructor
-@RequestMapping(value = OPEN_VOTE_URL, produces = MediaType.APPLICATION_JSON_VALUE)
-public class VoteController {
+@RequestMapping(value = ADMIN_VOTE_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+public class AdminVoteController {
 
-    public static final String OPEN_VOTE_URL = "/api/v1/votes";
+    public static final String ADMIN_VOTE_URL = "/api/v1/votes";
     private final VoteRepository repository;
 
     @GetMapping("/today")
