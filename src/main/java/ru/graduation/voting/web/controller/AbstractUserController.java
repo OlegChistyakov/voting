@@ -36,7 +36,6 @@ public abstract class AbstractUserController {
     @CacheEvict(value = "users", allEntries = true)
     public void delete(int id) {
         log.info("Delete account by id: {}", id);
-        voteRepository.deleteAllByUserId(id);
         userRepository.deleteExisted(id);
     }
 

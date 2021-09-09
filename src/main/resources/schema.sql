@@ -44,7 +44,7 @@ CREATE TABLE votes
     date    DATE    NOT NULL,
     user_id INTEGER NOT NULL,
     rest_id INTEGER NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users (id),
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
     FOREIGN KEY (rest_id) REFERENCES restaurants (id) ON DELETE CASCADE
 );
 

@@ -25,8 +25,4 @@ public interface VoteRepository extends BaseRepository<Vote> {
 
     Optional<Vote> findByIdAndUserId(int id, int userId);
 
-    @Transactional
-    @Modifying
-    @Query("DELETE FROM Vote v WHERE v.user.id=?1")
-    void deleteAllByUserId(int userId);
 }
