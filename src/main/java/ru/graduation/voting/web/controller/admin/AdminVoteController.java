@@ -26,7 +26,7 @@ import static ru.graduation.voting.web.controller.admin.AdminVoteController.ADMI
 @RequestMapping(value = ADMIN_VOTE_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class AdminVoteController {
 
-    public static final String ADMIN_VOTE_URL = "/api/v1/votes";
+    public static final String ADMIN_VOTE_URL = "/api/v1/admin/votes";
     private final VoteRepository repository;
 
     @GetMapping("/today")
