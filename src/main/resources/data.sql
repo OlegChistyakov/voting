@@ -22,7 +22,7 @@ VALUES ('RestaurantName1', 'address1'),
        ('RestaurantName2', 'address2'),
        ('RestaurantName3', 'address3');
 
-INSERT INTO dishes (rest_id, date, description, price)
+INSERT INTO dishes (rest_id, local_date, description, price)
 VALUES (100003, now() - 1, 'yesterday''s dish_1 from rest_1', 546),
        (100003, now(), 'today''s dish_1 from rest_1', 432),
        (100003, now() - 1, 'yesterday''s dish_2 from rest_1', 100),
@@ -33,7 +33,7 @@ VALUES (100003, now() - 1, 'yesterday''s dish_1 from rest_1', 546),
        (100004, now(), 'today''s dish_2 from rest_2', 10),
        (100005, now() - 10, 'very old dish', 1000);
 
-INSERT INTO votes (date, user_id, rest_id)
+INSERT INTO votes (local_date, user_id, rest_id)
 VALUES (now() - 1, 100000, 100003),
        (now() - 10, 100000, 100004),
        (now(), 100001, 100003),

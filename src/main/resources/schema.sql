@@ -30,25 +30,25 @@ CREATE TABLE dishes
 (
     id          INTEGER DEFAULT global_seq.nextval PRIMARY KEY,
     rest_id     INTEGER NOT NULL,
-    date        DATE    NOT NULL,
+    local_date  DATE    NOT NULL,
     description VARCHAR NOT NULL,
     price       INTEGER NOT NULL,
     FOREIGN KEY (rest_id) REFERENCES restaurants (id) ON DELETE CASCADE
 );
 
-CREATE UNIQUE INDEX dishes_unique_rest_date_description_idx ON dishes (rest_id, date, description);
+CREATE UNIQUE INDEX dishes_unique_rest_date_description_idx ON dishes (rest_id, local_date, description);
 
 CREATE TABLE votes
 (
-    id      INTEGER DEFAULT global_seq.nextval PRIMARY KEY,
-    date    DATE    NOT NULL,
-    user_id INTEGER NOT NULL,
-    rest_id INTEGER NOT NULL,
+    id         INTEGER DEFAULT global_seq.nextval PRIMARY KEY,
+    local_date DATE    NOT NULL,
+    user_id    INTEGER NOT NULL,
+    rest_id    INTEGER NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
     FOREIGN KEY (rest_id) REFERENCES restaurants (id) ON DELETE CASCADE
 );
 
-CREATE UNIQUE INDEX votes_unique_date_user_idx ON votes (user_id, date);
+CREATE UNIQUE INDEX votes_unique_date_user_idx ON votes (user_id, local_date);
 
 CREATE TABLE user_roles
 (

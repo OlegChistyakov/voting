@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @Table(name = "dishes", uniqueConstraints =
-        {@UniqueConstraint(columnNames = {"rest_id", "date", "description"}, name = "dishes_unique_rest_date_description_idx")})
+        {@UniqueConstraint(columnNames = {"rest_id", "local_date", "description"}, name = "dishes_unique_rest_date_description_idx")})
 public class Dish extends BaseEntity {
 
     @Column(name = "description")
@@ -24,7 +24,7 @@ public class Dish extends BaseEntity {
     @Column(name = "price")
     private int price;
 
-    @Column(name = "date")
+    @Column(name = "local_date")
     private LocalDate date;
 
     @ManyToOne(fetch = FetchType.LAZY)

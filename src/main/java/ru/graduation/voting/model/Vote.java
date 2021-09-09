@@ -17,10 +17,10 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "votes", uniqueConstraints =
-        {@UniqueConstraint(columnNames = {"user_id", "date"}, name = "votes_unique_date_user_idx")})
+        {@UniqueConstraint(columnNames = {"user_id", "local_date"}, name = "votes_unique_date_user_idx")})
 public class Vote extends BaseEntity {
 
-    @Column(name = "date")
+    @Column(name = "local_date")
     private LocalDate localDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
