@@ -17,8 +17,11 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import ru.graduation.voting.error.AppException;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static org.springframework.boot.web.error.ErrorAttributeOptions.Include.MESSAGE;
 
 @RestControllerAdvice
 @AllArgsConstructor
@@ -54,6 +57,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<?> appException(WebRequest request, AppException ex) {
         log.error("ApplicationException", ex);
         return createResponseEntity(getDefaultBody(request, ex.getOptions(), null), ex.getStatus());
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<?> persistException(WebRequest request, EntityNotFoundException ex) {
+        log.error("EntityNotFoundException ", ex);
+        return createResponseEntity(getDefaultBody(request, ErrorAttributeOptions.of(MESSAGE), null), HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     private ResponseEntity<Object> handleBindingErrors(BindingResult result, WebRequest request) {
