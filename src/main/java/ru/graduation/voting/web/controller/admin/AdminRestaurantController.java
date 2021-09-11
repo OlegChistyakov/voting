@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import ru.graduation.voting.error.NotFoundException;
 import ru.graduation.voting.model.Restaurant;
 import ru.graduation.voting.repository.RestaurantRepository;
 import ru.graduation.voting.to.RestaurantTo;
@@ -20,6 +21,7 @@ import java.net.URI;
 
 import static ru.graduation.voting.util.ValidationUtil.assureIdConsistent;
 import static ru.graduation.voting.util.ValidationUtil.checkNew;
+import static ru.graduation.voting.web.GlobalExceptionHandler.EXCEPTION_NOT_EXIST_ENTITY;
 import static ru.graduation.voting.web.controller.admin.AdminRestaurantController.ADMIN_REST_URL;
 import static ru.graduation.voting.web.controller.open.RestaurantController.OPEN_REST_URL;
 
@@ -58,7 +60,9 @@ public class AdminRestaurantController {
                        @Valid @RequestBody RestaurantTo to) {
         log.info("Update restaurant id: {}", id);
         assureIdConsistent(to, id);
-        repository.findExist(id);
+        if (!repository.existsById(id)) {
+            throw new NotFoundException(EXCEPTION_NOT_EXIST_ENTITY);
+        }
         repository.save(RestaurantUtil.convertToModel(to));
     }
 
